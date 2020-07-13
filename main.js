@@ -7,7 +7,9 @@ function createWindow () {
     height: 600,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    icon: "tokspace.png",
+    title: "TokSpace"
   });
 
   // and load the index.html of the app.
