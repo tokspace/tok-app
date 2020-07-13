@@ -11,7 +11,7 @@ function createWindow () {
   });
 
   // and load the index.html of the app.
-  win.loadFile('index.html');
+  win.loadURL("http://localhost:3000");
 }
 
 app.whenReady().then(createWindow);
