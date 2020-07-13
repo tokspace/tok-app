@@ -63,7 +63,7 @@
   },
   "scripts": {
     "react-start": "node scripts/start.js",
-    "start": "electron main.js",
+    "start": "concurrently \"node scripts/start.js\" \"delay 5 && electron main.js\"",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
@@ -138,6 +138,8 @@
     ]
   },
   "devDependencies": {
-    "electron": "^9.1.0"
+    "concurrently": "^5.2.0",
+    "electron": "^9.1.0",
+    "delay-cli": "^1.1.0"
   }
 }
