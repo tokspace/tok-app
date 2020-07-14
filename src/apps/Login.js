@@ -5,15 +5,10 @@ import { TextInput, Button } from "../components/Inputs";
 const LoginCard = styled.div`
     font-family: Roboto Mono;
     width: 30vw;
-    height: 50vh;
-    position: absolute;
     padding: 2em 2em;
     margin: auto;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     vertical-align: middle;
+    text-align: center;
 `;
 
 const LoginComponent = (props) => {
@@ -22,8 +17,15 @@ const LoginComponent = (props) => {
 
     return (
         <LoginCard className="lt-card lt-shadow">
+            <img
+                style={{
+                    height: 64,
+                }}
+                alt={""}
+                src={"tokspace.png"}
+            />
             <h2>Login</h2>
-            <p className="subtext">Welcome back to tokspace.</p>
+            <p className="subtext">Welcome back to TokSpace.</p>
             <TextInput
                 label="Username"
                 id="user"

@@ -10,18 +10,19 @@ const Background = styled.div`
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100vh;
         `}
 `;
 
 function App() {
     return (
-        <Background>
-            <Router>
-                <Switch>
+        <Router>
+            <Switch>
+                <Background centered>
                     <Route path="/" children={<LoginComponent />} />
-                </Switch>
-            </Router>
-        </Background>
+                </Background>
+            </Switch>
+        </Router>
     );
 }
 
