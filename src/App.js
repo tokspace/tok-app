@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import styled, { css } from "styled-components";
+import LoginComponent from "./apps/Login";
+import RegistrationComponent from "./apps/Registration";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+const Background = styled.div`
+    ${(props) =>
+        props.centered &&
+        css`
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        `}
+`;
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          I love carrots
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Switch>
+                <Background centered>
+                    <Route path="/register">
+                        <RegistrationComponent />
+                    </Route>
+                    <Route exact path="/">
+                        <LoginComponent />
+                    </Route>
+                </Background>
+            </Switch>
+        </Router>
+    );
 }
 
 export default App;
