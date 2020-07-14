@@ -12,7 +12,8 @@ const StyledLabel = styled.label`
         (props.value.length > 0) &&
         css`
         top: 0.8em;
-        opacity: 1
+        opacity: 1;
+        margin: 4px;
     `};
 `
 
