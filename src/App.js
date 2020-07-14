@@ -1,25 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled, { css } from 'styled-components';
+import LoginComponent from './Login';
+
+const Background = styled.div`
+  ${props => props.centered && css`
+    display: flex; // make us of Flexbox
+    align-items: center; // does vertically center the desired content
+    justify-content: center; // horizontally centers single line items
+  `}
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          I love carrots
-        </a>
-      </header>
-    </div>
+    <Background>
+      <LoginComponent />
+    </Background>
   );
 }
 
