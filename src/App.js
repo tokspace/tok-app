@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import LoginComponent from "./apps/Login";
+import RegistrationComponent from "./apps/Registration";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const Background = styled.div`
@@ -19,7 +20,11 @@ function App() {
         <Router>
             <Switch>
                 <Background centered>
-                    <Route path="/" children={<LoginComponent />} />
+                    <Route
+                        path="/register"
+                        children={<RegistrationComponent />}
+                    />
+                    <Route exact path="/" children={<LoginComponent />} />
                 </Background>
             </Switch>
         </Router>

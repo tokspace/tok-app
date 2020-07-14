@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 
-const LoginComponent = (props) => {
+const RegistrationComponent = (props) => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
+    const [confirmPass, setConfirmPass] = useState("");
 
     return (
         <Card className="lt-card lt-shadow">
@@ -15,8 +17,15 @@ const LoginComponent = (props) => {
                 alt={""}
                 src={"tokspace.png"}
             />
-            <h2>Login</h2>
-            <p className="subtext">Welcome back to TokSpace.</p>
+            <h2>Register</h2>
+            <p className="subtext">Tokspace: a platform for collaboration.</p>
+            <TextInput
+                label="Display Name"
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            />
             <TextInput
                 label="Email"
                 id="email"
@@ -31,9 +40,16 @@ const LoginComponent = (props) => {
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
             />
-            <Button className="lt-button lt-hover">Login</Button>
+            <TextInput
+                label="Confirm Password"
+                id="confirmPass"
+                type="password"
+                value={confirmPass}
+                onChange={(e) => setConfirmPass(e.target.value)}
+            />
+            <Button className="lt-button lt-hover">Register</Button>
         </Card>
     );
 };
 
-export default LoginComponent;
+export default RegistrationComponent;
