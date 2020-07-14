@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import LoginComponent from "./apps/Login";
 import RegistrationComponent from "./apps/Registration";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import RunningProcesses from "./components/RunningProcesses";
 
 const Background = styled.div`
     ${(props) =>
@@ -25,6 +26,9 @@ function App() {
                     </Route>
                     <Route exact path="/">
                         <LoginComponent />
+                    </Route>
+                    <Route path="/processes">
+                        <RunningProcesses />
                     </Route>
                 </Background>
             </Switch>
