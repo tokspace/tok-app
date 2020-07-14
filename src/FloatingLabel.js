@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { css } from 'styled-components'
+import React from "react";
+import styled, { css } from "styled-components";
 
 const StyledLabel = styled.label`
     position: absolute;
@@ -7,15 +7,14 @@ const StyledLabel = styled.label`
     font-weight: 300;
     font-size: 0.8em;
     opacity: 0;
-    transition: all 0.5s cubic-bezier(.25,.8,.25,1);
-    ${props =>
-        (props.value.length > 0) &&
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    ${(props) =>
+        props.value.length > 0 &&
         css`
-        top: 0.8em;
-        opacity: 1;
-        margin: 4px;
-    `};
-`
+            top: 0.4em;
+            opacity: 1;
+        `};
+`;
 
 const FloatingLabel = (props) => {
     return (
@@ -27,6 +26,6 @@ const FloatingLabel = (props) => {
             {props.label}
         </StyledLabel>
     );
-}
+};
 
-export default FloatingLabel
+export default FloatingLabel;

@@ -1,15 +1,14 @@
-import styled from 'styled-components';
-import React, { useState } from 'react';
-import FloatingLabel from './FloatingLabel';
+import styled from "styled-components";
+import React, { useState } from "react";
+import FloatingLabel from "./FloatingLabel";
 
 const RelPositioning = styled.div`
-    position: relative; 
-`
+    position: relative;
+`;
 
 const LoginCard = styled.div`
     font-family: Roboto Mono;
     width: 30vw;
-    height: 50vh;
     position: absolute;
     padding: 2em 2em;
     margin: auto;
@@ -18,16 +17,20 @@ const LoginCard = styled.div`
     bottom: 0;
     left: 0;
     vertical-align: middle;
-`
+`;
 
 const Input = styled.input`
     width: calc(100% - 1.6em);
-    font-family: 'Roboto Mono', monospace;
+    font-family: "Roboto Mono", monospace;
     font-size: 0.8em;
     padding: calc(0.8em - 1px);
     outline: none;
-    margin: 2em 0;
-`
+    margin-top: 2em;
+`;
+const YumButton = styled.button`
+    width: 100%;
+    margin-top: 2em;
+`;
 
 const TextInput = (props) => {
     return (
@@ -35,7 +38,8 @@ const TextInput = (props) => {
             <FloatingLabel
                 label={props.label}
                 id={props.id}
-                value={props.value} />
+                value={props.value}
+            />
             <Input
                 name={props.id}
                 className="lt-shadow"
@@ -45,35 +49,38 @@ const TextInput = (props) => {
                 autoFocus
                 autoComplete="off"
                 onChange={props.onChange}
-                value={props.value} />
+                value={props.value}
+            />
         </RelPositioning>
     );
-}
-
+};
 
 const LoginComponent = (props) => {
-    const [user, setUser] = useState('');
-    const [pass, setPass] = useState('');
+    const [user, setUser] = useState("");
+    const [pass, setPass] = useState("");
 
     return (
-        <LoginCard className='lt-card lt-shadow'>
-            <h2>Login</h2>
-            <p className="subtext">Some placeholder text yum</p>
-            <TextInput
-                label='Username'
-                id='user'
-                type='text'
-                value={user}
-                onChange={e => setUser(e.target.value)}
-            />
-            <TextInput
-                label='Password'
-                id='pass'
-                type='password'
-                value={pass}
-                onChange={e => setPass(e.target.value)}
-            />
-        </LoginCard>
+        <div>
+            <LoginCard className="lt-card lt-shadow">
+                <h2>Login</h2>
+                <p className="subtext">Some placeholder text yum</p>
+                <TextInput
+                    label="Username"
+                    id="user"
+                    type="text"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
+                />
+                <TextInput
+                    label="Password"
+                    id="pass"
+                    type="password"
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                />
+                <YumButton className="lt-button">Log In</YumButton>
+            </LoginCard>
+        </div>
     );
 };
 
