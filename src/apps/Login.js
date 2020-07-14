@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const LoginComponent = (props) => {
     const [email, setEmail] = useState("");
@@ -32,8 +32,10 @@ const LoginComponent = (props) => {
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
             />
-            <Link to="/register">Make an account.</Link>
             <Button className="lt-button lt-hover">Login</Button>
+            <Link to="/register" className="subtext">
+                Make an account
+            </Link>
         </Card>
     );
 };

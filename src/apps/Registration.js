@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
+import { Link } from "react-router-dom";
 
 const RegistrationComponent = (props) => {
     const [name, setName] = useState("");
@@ -48,6 +49,9 @@ const RegistrationComponent = (props) => {
                 onChange={(e) => setConfirmPass(e.target.value)}
             />
             <Button className="lt-button lt-hover">Register</Button>
+            <Link to="/" className="subtext">
+                Have an account? Login
+            </Link>
         </Card>
     );
 };
