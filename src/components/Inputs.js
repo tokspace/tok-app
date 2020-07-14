@@ -13,6 +13,7 @@ export const Input = styled.input`
     padding: calc(0.8em - 1px);
     outline: none;
     margin-top: 2em;
+    margin-bottom: 1em;
 `;
 
 export const Button = styled.button`
