@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import LoginComponent from "./apps/Login";
 import RegistrationComponent from "./apps/Registration";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import firebase from "firebase";
+import UserContext from "./contexts/UserContext";
 
 const Background = styled.div`
     ${(props) =>
@@ -16,19 +18,26 @@ const Background = styled.div`
 `;
 
 function App() {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(setUser);
+    }, []);
     return (
-        <Router>
-            <Switch>
-                <Background centered>
-                    <Route path="/register">
-                        <RegistrationComponent />
-                    </Route>
-                    <Route exact path="/">
-                        <LoginComponent />
-                    </Route>
-                </Background>
-            </Switch>
-        </Router>
+        <UserContext.Provider value={user}>
+            <Router>
+                <Switch>
+                    <Background centered>
+                        <Route path="/register">
+                            <RegistrationComponent />
+                        </Route>
+                        <Route exact path="/">
+                            <LoginComponent />
+                        </Route>
+                    </Background>
+                </Switch>
+            </Router>
+        </UserContext.Provider>
     );
 }
 

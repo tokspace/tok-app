@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
+import firebase from "firebase";
 
 const LoginComponent = (props) => {
     const [email, setEmail] = useState("");
@@ -32,7 +33,18 @@ const LoginComponent = (props) => {
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
             />
-            <Button className="lt-button lt-hover">Login</Button>
+            <Button
+                className="lt-button lt-hover"
+                onClick={() => {
+                    firebase
+                        .auth()
+                        .signInWithEmailAndPassword(email, pass)
+                        .catch((e) => {
+                            alert(e.message);
+                        });
+                }}>
+                Login
+            </Button>
             <Link to="/register" className="subtext">
                 Make an account
             </Link>
