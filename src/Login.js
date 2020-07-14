@@ -9,6 +9,7 @@ const RelPositioning = styled.div`
 const LoginCard = styled.div`
     font-family: Roboto Mono;
     width: 30vw;
+    height: 50vh;
     position: absolute;
     padding: 2em 2em;
     margin: auto;
@@ -27,9 +28,12 @@ const Input = styled.input`
     outline: none;
     margin-top: 2em;
 `;
-const YumButton = styled.button`
+const Button = styled.button`
     width: 100%;
+    font-weight: 900;
+    padding: calc(0.8em - 1px);
     margin-top: 2em;
+    font-family: "Roboto Mono", monospace;
 `;
 
 const TextInput = (props) => {
@@ -63,7 +67,7 @@ const LoginComponent = (props) => {
         <div>
             <LoginCard className="lt-card lt-shadow">
                 <h2>Login</h2>
-                <p className="subtext">Some placeholder text yum</p>
+                <p className="subtext">Welcome back to tokspace.</p>
                 <TextInput
                     label="Username"
                     id="user"
@@ -78,7 +82,7 @@ const LoginComponent = (props) => {
                     value={pass}
                     onChange={(e) => setPass(e.target.value)}
                 />
-                <YumButton className="lt-button">Log In</YumButton>
+                <Button className="lt-button lt-hover">Login</Button>
             </LoginCard>
         </div>
     );
