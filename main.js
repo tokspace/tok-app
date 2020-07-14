@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
+const psList = require("ps-list");
 
 function createWindow() {
     // Create the browser window.
@@ -17,11 +18,20 @@ function createWindow() {
 
     // Listen for the front-end web app to send a request that asks for what
     // processes are running on the user's machine.
-    ipcMain.on("processesRequest", (event, _arg) =>
-        // TODO: use node's APIs to find all running processes.
-        // For now, we'll just send a dummy list of fake process names.
-        event.reply("processesReply", ["spotify", "mail", "safari"]),
-    );
+    ipcMain.handle("processesRequest", async (_event, ..._args) => {
+        try {
+            let processesList = await psList();
+            return processesList.map(
+                (process) => `${process.name} (PID: ${process.pid})`,
+            );
+        } catch (err) {
+            // TODO: better error handling strategy.
+            return [
+                "An error occurred when fetching the running processes on your machine",
+                err.message,
+            ];
+        }
+    });
 }
 
 app.whenReady().then(createWindow);
