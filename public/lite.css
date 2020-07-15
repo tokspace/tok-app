@@ -1,3 +1,7 @@
+*, *::after *::before {
+  box-sizing: border-box;
+}
+
 :root {
   --lt-colours-light: #fbfffe;
   --lt-colours-lightgray: #f0f0f0;
