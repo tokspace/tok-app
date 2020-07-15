@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
+import firebase from "firebase/app";
 import ErrorMessage from "../components/ErrorMessage";
-import firebase from "firebase";
 
-const RegistrationComponent = (props) => {
+const RegistrationComponent = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
@@ -88,7 +88,9 @@ const RegistrationComponent = (props) => {
                 value={confirmPass}
                 onChange={(e) => setConfirmPass(e.target.value)}
             />
-            <Button className="lt-button lt-hover" onClick={validateForm}>
+            <Button
+                className="lt-button lt-hover"
+                onClick={validateForm}>
                 Register
             </Button>
             <Link to="/" className="subtext">

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
+import firebase from "firebase/app";
 import ErrorMessage from "../components/ErrorMessage";
-import firebase from "firebase";
 
 const LoginComponent = (props) => {
     const [email, setEmail] = useState("");
