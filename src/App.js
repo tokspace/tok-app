@@ -5,7 +5,7 @@ import RegistrationComponent from "./apps/Registration";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import firebase from "firebase";
 import UserContext from "./contexts/UserContext";
-import RunningProcesses from "./components/RunningProcesses";
+import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
 
 const Background = styled.div`
     ${(props) =>
@@ -25,20 +25,23 @@ function App() {
         firebase.auth().onAuthStateChanged(setUser);
     }, []);
     return (
-        <UserContext.Provider value={user}>
-            <Router>
-                <Switch>
-                    <Background centered>
-                        <Route path="/register">
-                            <RegistrationComponent />
-                        </Route>
-                        <Route exact path="/">
-                            <LoginComponent />
-                        </Route>
-                    </Background>
-                </Switch>
-            </Router>
-        </UserContext.Provider>
+        <>
+            <InvisibleTitleBar />
+            <UserContext.Provider value={user}>
+                <Router>
+                    <Switch>
+                        <Background centered>
+                            <Route path="/register">
+                                <RegistrationComponent />
+                            </Route>
+                            <Route exact path="/">
+                                <LoginComponent />
+                            </Route>
+                        </Background>
+                    </Switch>
+                </Router>
+            </UserContext.Provider>
+        </>
     );
 }
 
