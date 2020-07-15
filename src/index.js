@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import firebase from "firebase";
+import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDrIOmVTR7_oMcStFsJ3jPMXrEpEByfBzw",
@@ -19,16 +20,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-function writeData() {
-    firebase
-        .database()
-        .ref("User")
-        .set({
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value,
-        });
-}
-
 ReactDOM.render(
     <React.StrictMode>
         <App />
@@ -40,5 +31,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
-
-export default writeData;

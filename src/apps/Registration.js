@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
-import firebase from "firebase";
-import writeData from "../index.js";
+import firebase from "firebase/app";
 
-const RegistrationComponent = (props) => {
+const RegistrationComponent = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
@@ -56,15 +55,16 @@ const RegistrationComponent = (props) => {
                     firebase
                         .auth()
                         .createUserWithEmailAndPassword(email, pass)
-                        .then((user) => {
-                            writeData();
-                            const docRef = firebase
-                                .firestore()
+                        .then(({ user }) => {
+                            firebase.firestore()
                                 .collection("Users")
-                                .doc();
-                            docRef.set({
-                                Name: document.getElementById("name").value,
-                                Email: document.getElementById("email").value,
+                                .doc(user.uid)
+                                .set({
+                                name, email,
+                                offices: [{
+                                    name: "TokSpace",
+                                    office: firebase.firestore().doc(`Offices/3mfArDn3ejO0oVQDwTdJ`)
+                                }]
                             });
                         })
                         .catch((e) => {
