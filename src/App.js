@@ -11,8 +11,8 @@ import Dashboard from "./apps/Dashboard";
 
 const Background = styled.div`
     ${(props) =>
-    props.centered &&
-    css`
+        props.centered &&
+        css`
             display: flex;
             align-items: center;
             justify-content: center;
@@ -28,43 +28,53 @@ function App() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        let unsubscribers = [];
+        const unsubscribers = [];
 
-        firebase.auth().onAuthStateChanged(firebaseUser => {
+        firebase.auth().onAuthStateChanged((firebaseUser) => {
             if (firebaseUser === null) {
                 setUser(null);
             }
-            unsubscribers.push(firebase.firestore()
-                .doc(`Users/${firebaseUser.uid}`)
-                .get().then(snapshot => {
-                    setUser({
-                        tokProfile: snapshot.data(),
-                        ...firebaseUser,
-                    });
-                }));
+            unsubscribers.push(
+                firebase
+                    .firestore()
+                    .doc(`Users/${firebaseUser.uid}`)
+                    .get()
+                    .then((snapshot) => {
+                        setUser({
+                            tokProfile: snapshot.data(),
+                            ...firebaseUser,
+                        });
+                    }),
+            );
         });
 
         return () => {
-            unsubscribers.forEach(it => it());
+            unsubscribers.forEach((it) => it());
         };
     }, []);
     return (
         <UserContext.Provider value={user}>
             <Router>
                 <Switch>
-                    {user !== null && <>
-                        <Route path={"/office/:officeId"}>
-                            <OfficeView/>
-                        </Route>
-                        <Route exact path="/">
-                            <Dashboard/>
-                        </Route>
-                    </>}
+                    {user !== null && (
+                        <>
+                            <Route path={"/office/:officeId"}>
+                                <OfficeView />
+                            </Route>
+                            <Route exact path="/">
+                                <Dashboard />
+                            </Route>
+                        </>
+                    )}
                     <Route path="/register">
-                        <Background centered={true}><RegistrationComponent/></Background>
+                        <Background centered={true}>
+                            <RegistrationComponent />
+                        </Background>
                     </Route>
                     <Route path="/login">
-                        <Background centered={true}><LoginComponent/></Background>
+                        <Background centered={true}>
+                            <LoginComponent />
+                        </Background>
                     </Route>
                 </Switch>
             </Router>
