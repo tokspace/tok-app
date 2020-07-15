@@ -5,6 +5,7 @@ import RegistrationComponent from "./apps/Registration";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import firebase from "firebase";
 import UserContext from "./contexts/UserContext";
+import RunningProcesses from "./components/RunningProcesses";
 
 const Background = styled.div`
     ${(props) =>
