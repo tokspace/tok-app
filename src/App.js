@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
 import LoginComponent from "./apps/Login";
 import RegistrationComponent from "./apps/Registration";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import firebase from "firebase/app";
 import UserContext from "./contexts/UserContext";
 import OfficeView from "./apps/OfficeView";
 import PropTypes from "prop-types";
 import Dashboard from "./apps/Dashboard";
+import Peer from "simple-peer";
+import SessionInitiator from "./apps/SessionInitiator";
 
 const Background = styled.div`
     ${(props) =>
@@ -27,6 +29,25 @@ Background.propTypes = {
 function App() {
     const [user, setUser] = useState(null);
 
+    const ws = useMemo(() => new WebSocket("ws://localhost:8080"), []);
+    const acceptor = useMemo(() => new Peer(), []);
+    let signalTarget;
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        acceptor.signal(data);
+        signalTarget = data.author;
+    };
+
+    acceptor.on("signal", (data) => {
+        ws.send(JSON.stringify({ data, target: signalTarget }));
+    });
+
+    acceptor.on("data", (data) => {
+        // got a data channel message
+        console.log(`got a message from ${signalTarget}: ${data}`);
+    });
+
     useEffect(() => {
         const unsubscribers = [];
 
@@ -34,6 +55,7 @@ function App() {
             if (firebaseUser === null) {
                 setUser(null);
             } else {
+                ws.send(firebaseUser.uid);
                 unsubscribers.push(
                     firebase
                         .firestore()
@@ -52,13 +74,16 @@ function App() {
         return () => {
             unsubscribers.forEach((it) => it());
         };
-    }, []);
+    }, [ws]);
     return (
         <UserContext.Provider value={user}>
             <Router>
                 <Switch>
                     {user !== null && (
                         <>
+                            <Route path={"/sessions/new-with-user/:userId"}>
+                                <SessionInitiator />
+                            </Route>
                             <Route path={"/office/:officeId"}>
                                 <OfficeView />
                             </Route>

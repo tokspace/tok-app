@@ -56,16 +56,45 @@ const RegistrationComponent = () => {
                         .auth()
                         .createUserWithEmailAndPassword(email, pass)
                         .then(({ user }) => {
-                            firebase.firestore()
-                                .collection("Users")
-                                .doc(user.uid)
-                                .set({
-                                name, email,
-                                offices: [{
-                                    name: "TokSpace",
-                                    office: firebase.firestore().doc(`Offices/3mfArDn3ejO0oVQDwTdJ`)
-                                }]
+                            const db = firebase.firestore();
+
+                            const write = db.batch();
+
+                            let userRef = db.doc(`Users/${user.uid}`);
+                            write.set(userRef, {
+                                name,
+                                email,
+                                offices: [
+                                    {
+                                        name: "TokSpace",
+                                        office: firebase
+                                            .firestore()
+                                            .doc(
+                                                `Offices/3mfArDn3ejO0oVQDwTdJ`,
+                                            ),
+                                    },
+                                ],
                             });
+
+                            write.update(
+                                db.doc(`Offices/3mfArDn3ejO0oVQDwTdJ`),
+                                {
+                                    Users: firebase.firestore.FieldValue.arrayUnion(
+                                        {
+                                            name,
+                                            user: userRef,
+                                        },
+                                    ),
+                                },
+                            );
+
+                            write
+                                .commit()
+                                .then(() =>
+                                    alert(
+                                        "Your profile was created successfully",
+                                    ),
+                                );
                         })
                         .catch((e) => {
                             alert(e.message);
