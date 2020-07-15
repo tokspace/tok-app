@@ -27,9 +27,6 @@ function App() {
                     <Route exact path="/">
                         <LoginComponent />
                     </Route>
-                    <Route path="/processes">
-                        <RunningProcesses />
-                    </Route>
                 </Background>
             </Switch>
         </Router>
