@@ -45,7 +45,7 @@ const RegistrationComponent = (props) => {
                 alert("This is where Yashika works her magick");
             })
             .catch((e) => {
-                alert(e.message);
+                setErrMsg(e.message);
             });
     };
 

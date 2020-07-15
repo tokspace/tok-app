@@ -20,7 +20,7 @@ const LoginComponent = (props) => {
             .auth()
             .signInWithEmailAndPassword(email, pass)
             .catch((e) => {
-                alert(e.message);
+                setErrMsg(e.message);
             });
     };
 
