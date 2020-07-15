@@ -15,10 +15,10 @@ function createWindow() {
 
     // and load the index.html of the app.
     win.loadURL("http://localhost:3000");
-
-    // Listen for the front-end web app to send a request that asks for what
-    // processes are running on the user's machine.
-    ipcMain.handle("processesRequest", async () => psList());
 }
 
 app.whenReady().then(createWindow);
+
+// Listen for the front-end web app to send a request that asks for what
+// processes are running on the user's machine.
+ipcMain.handle("processesRequest", async () => psList());
