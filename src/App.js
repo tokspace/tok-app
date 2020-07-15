@@ -33,19 +33,20 @@ function App() {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
             if (firebaseUser === null) {
                 setUser(null);
+            } else {
+                unsubscribers.push(
+                    firebase
+                        .firestore()
+                        .doc(`Users/${firebaseUser.uid}`)
+                        .get()
+                        .then((snapshot) => {
+                            setUser({
+                                tokProfile: snapshot.data(),
+                                ...firebaseUser,
+                            });
+                        }),
+                );
             }
-            unsubscribers.push(
-                firebase
-                    .firestore()
-                    .doc(`Users/${firebaseUser.uid}`)
-                    .get()
-                    .then((snapshot) => {
-                        setUser({
-                            tokProfile: snapshot.data(),
-                            ...firebaseUser,
-                        });
-                    }),
-            );
         });
 
         return () => {
@@ -71,7 +72,7 @@ function App() {
                             <RegistrationComponent />
                         </Background>
                     </Route>
-                    <Route path="/login">
+                    <Route exact path={"/"}>
                         <Background centered={true}>
                             <LoginComponent />
                         </Background>
