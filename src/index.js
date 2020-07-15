@@ -19,6 +19,16 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+function writeData() {
+    firebase
+        .database()
+        .ref("User")
+        .set({
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+        });
+}
+
 ReactDOM.render(
     <React.StrictMode>
         <App />
@@ -30,3 +40,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+export default writeData;

@@ -3,6 +3,7 @@ import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
 import firebase from "firebase";
+import writeData from "../index.js";
 
 const RegistrationComponent = (props) => {
     const [name, setName] = useState("");
@@ -56,7 +57,8 @@ const RegistrationComponent = (props) => {
                         .auth()
                         .createUserWithEmailAndPassword(email, pass)
                         .then((user) => {
-                            alert("This is where Yashika works her magick");
+                            // alert("This is where Yashika works her magick");
+                            writeData();
                         })
                         .catch((e) => {
                             alert(e.message);
