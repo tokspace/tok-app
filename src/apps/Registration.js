@@ -3,12 +3,51 @@ import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
 import firebase from "firebase/app";
+import ErrorMessage from "../components/ErrorMessage";
 
 const RegistrationComponent = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
+    const [errMsg, setErrMsg] = useState("");
+
+    const validateForm = () => {
+        // pass length
+        if (pass.length < 6) {
+            setErrMsg("Password must be > 6 characters");
+            return;
+        }
+
+        // passes equal
+        if (pass !== confirmPass) {
+            setErrMsg("Passwords aren't the same");
+            return;
+        }
+
+        // email validation
+        const re = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w+)+$/;
+        if (!re.test(email)) {
+            setErrMsg("Email is invalid");
+            return;
+        }
+
+        // name validation
+        if (name.trim() === "") {
+            setErrMsg("Name cannot be empty");
+            return;
+        }
+
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, pass)
+            .then((user) => {
+                alert("This is where Yashika works her magick");
+            })
+            .catch((e) => {
+                setErrMsg(e.message);
+            });
+    };
 
     return (
         <Card className="lt-card lt-shadow">
@@ -51,31 +90,17 @@ const RegistrationComponent = () => {
             />
             <Button
                 className="lt-button lt-hover"
-                onClick={() => {
-                    firebase
-                        .auth()
-                        .createUserWithEmailAndPassword(email, pass)
-                        .then(({ user }) => {
-                            firebase.firestore()
-                                .collection("Users")
-                                .doc(user.uid)
-                                .set({
-                                name, email,
-                                offices: [{
-                                    name: "TokSpace",
-                                    office: firebase.firestore().doc(`Offices/3mfArDn3ejO0oVQDwTdJ`)
-                                }]
-                            });
-                        })
-                        .catch((e) => {
-                            alert(e.message);
-                        });
-                }}>
+                onClick={validateForm}>
                 Register
             </Button>
             <Link to="/" className="subtext">
                 Have an account? Login
             </Link>
+            <ErrorMessage
+                message={errMsg}
+                timeout={3000}
+                setMessage={setErrMsg}
+            />
         </Card>
     );
 };
