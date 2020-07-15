@@ -18,20 +18,7 @@ function createWindow() {
 
     // Listen for the front-end web app to send a request that asks for what
     // processes are running on the user's machine.
-    ipcMain.handle("processesRequest", async (_event, ..._args) => {
-        try {
-            let processesList = await psList();
-            return processesList.map(
-                (process) => `${process.name} (PID: ${process.pid})`,
-            );
-        } catch (err) {
-            // TODO: better error handling strategy.
-            return [
-                "An error occurred when fetching the running processes on your machine",
-                err.message,
-            ];
-        }
-    });
+    ipcMain.handle("processesRequest", async () => psList());
 }
 
 app.whenReady().then(createWindow);
