@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
+import firebase from "firebase";
 
 const RegistrationComponent = (props) => {
     const [name, setName] = useState("");
@@ -48,7 +49,21 @@ const RegistrationComponent = (props) => {
                 value={confirmPass}
                 onChange={(e) => setConfirmPass(e.target.value)}
             />
-            <Button className="lt-button lt-hover">Register</Button>
+            <Button
+                className="lt-button lt-hover"
+                onClick={() => {
+                    firebase
+                        .auth()
+                        .createUserWithEmailAndPassword(email, pass)
+                        .then((user) => {
+                            alert("This is where Yashika works her magick");
+                        })
+                        .catch((e) => {
+                            alert(e.message);
+                        });
+                }}>
+                Register
+            </Button>
             <Link to="/" className="subtext">
                 Have an account? Login
             </Link>
