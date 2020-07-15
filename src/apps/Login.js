@@ -2,11 +2,27 @@ import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 import { Link } from "react-router-dom";
+import ErrorMessage from "../components/ErrorMessage";
 import firebase from "firebase";
 
 const LoginComponent = (props) => {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
+    const [errMsg, setErrMsg] = useState("");
+
+    const validateForm = () => {
+        if (pass.length < 6) {
+            setErrMsg("Password must be > 6 characters");
+            return;
+        }
+
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, pass)
+            .catch((e) => {
+                alert(e.message);
+            });
+    };
 
     return (
         <Card className="lt-card lt-shadow">
@@ -33,21 +49,17 @@ const LoginComponent = (props) => {
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
             />
-            <Button
-                className="lt-button lt-hover"
-                onClick={() => {
-                    firebase
-                        .auth()
-                        .signInWithEmailAndPassword(email, pass)
-                        .catch((e) => {
-                            alert(e.message);
-                        });
-                }}>
+            <Button className="lt-button lt-hover" onClick={validateForm}>
                 Login
             </Button>
             <Link to="/register" className="subtext">
                 Make an account
             </Link>
+            <ErrorMessage
+                message={errMsg}
+                timeout={3000}
+                setMessage={setErrMsg}
+            />
         </Card>
     );
 };
