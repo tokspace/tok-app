@@ -26,7 +26,7 @@ const RegistrationComponent = (props) => {
         }
 
         // email validation
-        const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w+)+$/;
         if (!re.test(email)) {
             setErrMsg("Email is invalid");
             return;
