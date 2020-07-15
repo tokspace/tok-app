@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-const electron = window.require("electron");
 
 const RunningProcesses = () => {
     const [runningProcesses, setRunningProcesses] = useState([""]);
@@ -8,10 +7,7 @@ const RunningProcesses = () => {
     // Processes" button. This sends a message to the main Electron process, and
     // formats the response into something fit for displaying to the user.
     const handleRequestProcessesPress = async () => {
-        let processesList = await electron.ipcRenderer.invoke(
-            "processesRequest",
-            null,
-        );
+        let processesList = await ipcRenderer.invoke("processesRequest", null);
         processesList = processesList.map(
             (process) => `${process.name} (PID: ${process.pid})`,
         );

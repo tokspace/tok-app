@@ -7,7 +7,7 @@ function createWindow() {
         width: 800,
         height: 900,
         webPreferences: {
-            nodeIntegration: true,
+            preload: __dirname + "/preload.js",
         },
         icon: "tokspace.png",
         title: "TokSpace",
