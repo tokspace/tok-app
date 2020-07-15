@@ -57,8 +57,15 @@ const RegistrationComponent = (props) => {
                         .auth()
                         .createUserWithEmailAndPassword(email, pass)
                         .then((user) => {
-                            // alert("This is where Yashika works her magick");
                             writeData();
+                            const docRef = firebase
+                                .firestore()
+                                .collection("Users")
+                                .doc();
+                            docRef.set({
+                                Name: document.getElementById("name").value,
+                                Email: document.getElementById("email").value,
+                            });
                         })
                         .catch((e) => {
                             alert(e.message);
