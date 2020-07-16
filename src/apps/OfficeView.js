@@ -19,7 +19,7 @@ export default function () {
             .onSnapshot((snapshot) => {
                 setOfficeState(snapshot.data());
             });
-    }, []);
+    }, [officeId]);
 
     const history = useHistory();
     const signout = () => {
@@ -43,7 +43,7 @@ export default function () {
                     </li>
                 ))}
             </ul>
-            <Button className="lt-button lt-hover" onClick={signout}>
+            <Button to="/" className="lt-button lt-hover" onClick={signout}>
                 Signout
             </Button>
         </Card>

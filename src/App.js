@@ -75,7 +75,7 @@ function App() {
                     });
             }
         });
-    }, []);
+    }, [ws]);
 
     return (
         <>
@@ -103,11 +103,12 @@ function App() {
                                 <RegistrationComponent />
                             </Background>
                         </Route>
-                        <Route>
+                        <Route exact path="/">
                             <Background centered={true}>
                                 <LoginComponent />
                             </Background>
                         </Route>
+                        <Redirect to="/" />
                     </Switch>
                 </Router>
             </UserContext.Provider>
