@@ -65,6 +65,9 @@ function App() {
                     });
                     webSocket.send(JSON.stringify(message));
                 });
+                acceptingPeer.on("data", function (data) {
+                    console.debug(`Got a message: ${data}`);
+                });
             });
             webSocket.addEventListener("message", function (ev) {
                 const data = JSON.parse(ev.data);

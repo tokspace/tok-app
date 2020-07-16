@@ -20,6 +20,11 @@ export default function () {
                 });
                 webSocket.send(JSON.stringify(message));
             });
+
+            initiator.on("connect", function () {
+                console.debug("Connected");
+                initiator.send("Hello Jacky!");
+            });
         });
 
         webSocket.addEventListener("message", function (ev) {
