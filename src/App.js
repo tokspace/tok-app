@@ -34,6 +34,7 @@ Background.propTypes = {
 
 function App() {
     const [user, setUser] = useState(null);
+    const [audioSource, setAudioSource] = useState(null);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -77,6 +78,22 @@ function App() {
             acceptingPeer.on("connect", function () {
                 console.log("Fired from the connect listener");
                 acceptingPeer.send("Sending from nick's machine :)");
+
+                window.acceptingPeer = acceptingPeer;
+
+                // navigator.mediaDevices.getUserMedia({
+                //     audio: true
+                // }).then((track) => {
+                //     acceptingPeer.addTrack(track);
+                //     acceptingPeer.on('track', track => {
+                //         setAudioSource(track);
+                //     });
+
+                //     audioSource.play();
+                // }).catch((err) => {
+                //     console.log("catching an error from the acceptingPeer.on('connect') listener:");
+                //     console.error(err);
+                // });
             });
             acceptingPeer.on("data", function (data) {
                 console.debug(`Got a message: ${data}`);
@@ -125,6 +142,7 @@ function App() {
             <InvisibleTitleBar />
             <UserContext.Provider value={user}>
                 <Router>{routes}</Router>
+                {audioSource && <audio src={audioSource}></audio>}
             </UserContext.Provider>
         </>
     );
