@@ -50,32 +50,25 @@ function App() {
     });
 
     useEffect(() => {
-        const unsubscribers = [];
-
         firebase.auth().onAuthStateChanged((firebaseUser) => {
+            console.log(firebaseUser);
             if (firebaseUser === null) {
                 setUser(null);
             } else {
-                ws.send(firebaseUser.uid);
-                unsubscribers.push(
-                    firebase
-                        .firestore()
-                        .doc(`Users/${firebaseUser.uid}`)
-                        .get()
-                        .then((snapshot) => {
-                            setUser({
-                                tokProfile: snapshot.data(),
-                                ...firebaseUser,
-                            });
-                        }),
-                );
+                // ws.send(firebaseUser.uid);
+                firebase
+                    .firestore()
+                    .doc(`Users/${firebaseUser.uid}`)
+                    .get()
+                    .then((snapshot) => {
+                        setUser({
+                            tokProfile: snapshot.data(),
+                            ...firebaseUser,
+                        });
+                    });
             }
         });
-
-        return () => {
-            unsubscribers.forEach((it) => it());
-        };
-    }, [ws]);
+    }, []);
     return (
         <>
             <InvisibleTitleBar />
@@ -83,7 +76,7 @@ function App() {
                 <Router>
                     <Switch>
                         {user !== null && (
-                            <>
+                            <Background>
                                 <Route path={"/sessions/new-with-user/:userId"}>
                                     <SessionInitiator />
                                 </Route>
@@ -93,14 +86,14 @@ function App() {
                                 <Route exact path="/">
                                     <Dashboard />
                                 </Route>
-                            </>
+                            </Background>
                         )}
                         <Route path="/register">
                             <Background centered={true}>
                                 <RegistrationComponent />
                             </Background>
                         </Route>
-                        <Route exact path={"/"}>
+                        <Route>
                             <Background centered={true}>
                                 <LoginComponent />
                             </Background>

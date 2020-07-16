@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
+import { Button } from "../components/Inputs";
 
 export default function () {
     const { officeId } = useParams();
@@ -17,7 +18,17 @@ export default function () {
             .onSnapshot((snapshot) => {
                 setOfficeState(snapshot.data());
             });
-    });
+    }, []);
+
+    const history = useHistory();
+    const signout = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                history.push("/");
+            });
+    };
 
     return (
         <div>
@@ -31,6 +42,7 @@ export default function () {
                     </li>
                 ))}
             </ul>
+            <Button onClick={signout}>Signout</Button>
         </div>
     );
 }
