@@ -52,7 +52,7 @@ function App() {
                     });
                 });
 
-            const webSocket = new WebSocket("ws://c90a1c436877.ngrok.io");
+            const webSocket = new WebSocket("ws://localhost:8080");
             const acceptingPeer = new Peer();
 
             let lastAuthor;
