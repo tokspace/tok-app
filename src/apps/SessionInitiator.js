@@ -8,7 +8,7 @@ export default function () {
     const user = useContext(UserContext);
 
     useEffect(function () {
-        const webSocket = new WebSocket("ws://localhost:8080");
+        const webSocket = new WebSocket("ws://c90a1c436877.ngrok.io");
         const initiator = new Peer({ initiator: true });
 
         webSocket.addEventListener("open", function () {
@@ -29,6 +29,7 @@ export default function () {
         });
 
         initiator.on("connect", function () {
+            console.log("initiator connect event listener fired");
             console.debug("Connected");
             initiator.send("Hello Jacky!");
         });

@@ -52,7 +52,7 @@ function App() {
                     });
                 });
 
-            const webSocket = new WebSocket("ws://localhost:8080");
+            const webSocket = new WebSocket("ws://c90a1c436877.ngrok.io");
             const acceptingPeer = new Peer();
 
             let lastAuthor;
@@ -60,6 +60,7 @@ function App() {
             webSocket.addEventListener("open", function () {
                 webSocket.send(firebaseUser.uid);
                 acceptingPeer.on("signal", function (data) {
+                    console.log(data);
                     const message = Object.assign(data, {
                         target: lastAuthor,
                     });
@@ -68,9 +69,14 @@ function App() {
             });
             webSocket.addEventListener("message", function (ev) {
                 const data = JSON.parse(ev.data);
+                console.log(data);
 
                 lastAuthor = data.author;
                 acceptingPeer.signal(data);
+            });
+            acceptingPeer.on("connect", function () {
+                console.log("Fired from the connect listener");
+                acceptingPeer.send("Sending from nick's machine :)");
             });
             acceptingPeer.on("data", function (data) {
                 console.debug(`Got a message: ${data}`);
