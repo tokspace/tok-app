@@ -20,17 +20,17 @@ export default function () {
                 });
                 webSocket.send(JSON.stringify(message));
             });
-
-            initiator.on("connect", function () {
-                console.debug("Connected");
-                initiator.send("Hello Jacky!");
-            });
         });
 
         webSocket.addEventListener("message", function (ev) {
             const data = JSON.parse(ev.data);
             console.debug(data);
             initiator.signal(data);
+        });
+
+        initiator.on("connect", function () {
+            console.debug("Connected");
+            initiator.send("Hello Jacky!");
         });
     });
     return <p>Starting a session with {userId}</p>;
