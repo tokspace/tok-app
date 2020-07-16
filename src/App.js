@@ -30,7 +30,7 @@ Background.propTypes = {
 function App() {
     const [user, setUser] = useState(null);
 
-    const ws = useMemo(() => new WebSocket("ws://localhost:8080"), []);
+    const ws = useMemo(() => new WebSocket("ws://aff644e2496a.ngrok.io/"), []);
     const acceptor = useMemo(() => new Peer(), []);
     let signalTarget;
 
@@ -41,7 +41,7 @@ function App() {
     };
 
     acceptor.on("signal", (data) => {
-        ws.send(JSON.stringify({ data, target: signalTarget }));
+        ws.send(JSON.stringify({ ...data, target: signalTarget }));
     });
 
     acceptor.on("data", (data) => {
@@ -55,7 +55,10 @@ function App() {
             if (firebaseUser === null) {
                 setUser(null);
             } else {
-                // ws.send(firebaseUser.uid);
+                ws.addEventListener("open", (ev) => {
+                    ws.send(firebaseUser.uid);
+                });
+
                 firebase
                     .firestore()
                     .doc(`Users/${firebaseUser.uid}`)

@@ -7,19 +7,25 @@ export default function () {
     const { userId } = useParams();
     const user = useContext(UserContext);
 
-    const ws = useMemo(() => new WebSocket("ws://localhost:8080"), []);
+    const ws = useMemo(() => new WebSocket("ws://aff644e2496a.ngrok.io/"), []);
     const initiator = new Peer({ initiator: true });
 
     ws.onmessage = (ev) => {
+        // console.log(ev.data)
+        // console.log(JSON.parse(ev.data))
         initiator.signal(JSON.parse(ev.data));
     };
 
+    ws.addEventListener("open", (ev) => {
+        ws.send(user.uid);
+    });
+
     initiator.on("signal", (data) => {
         ws.addEventListener("open", (ev) => {
-            ws.send(user.uid);
+            // console.log(data)
             ws.send(
                 JSON.stringify({
-                    data,
+                    ...data,
                     target: userId,
                 }),
             );
