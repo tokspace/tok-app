@@ -8,6 +8,7 @@ function createWindow() {
     const win = new BrowserWindow({
         width: 800,
         height: 900,
+        titleBarStyle: "hiddenInset",
         webPreferences: {
             preload: __dirname + "/preload.js",
         },

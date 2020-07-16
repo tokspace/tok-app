@@ -5,6 +5,7 @@ import RegistrationComponent from "./apps/Registration";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import firebase from "firebase/app";
 import UserContext from "./contexts/UserContext";
+import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
 import OfficeView from "./apps/OfficeView";
 import PropTypes from "prop-types";
 import Dashboard from "./apps/Dashboard";
@@ -76,35 +77,38 @@ function App() {
         };
     }, [ws]);
     return (
-        <UserContext.Provider value={user}>
-            <Router>
-                <Switch>
-                    {user !== null && (
-                        <>
-                            <Route path={"/sessions/new-with-user/:userId"}>
-                                <SessionInitiator />
-                            </Route>
-                            <Route path={"/office/:officeId"}>
-                                <OfficeView />
-                            </Route>
-                            <Route exact path="/">
-                                <Dashboard />
-                            </Route>
-                        </>
-                    )}
-                    <Route path="/register">
-                        <Background centered={true}>
-                            <RegistrationComponent />
-                        </Background>
-                    </Route>
-                    <Route exact path={"/"}>
-                        <Background centered={true}>
-                            <LoginComponent />
-                        </Background>
-                    </Route>
-                </Switch>
-            </Router>
-        </UserContext.Provider>
+        <>
+            <InvisibleTitleBar />
+            <UserContext.Provider value={user}>
+                <Router>
+                    <Switch>
+                        {user !== null && (
+                            <>
+                                <Route path={"/sessions/new-with-user/:userId"}>
+                                    <SessionInitiator />
+                                </Route>
+                                <Route path={"/office/:officeId"}>
+                                    <OfficeView />
+                                </Route>
+                                <Route exact path="/">
+                                    <Dashboard />
+                                </Route>
+                            </>
+                        )}
+                        <Route path="/register">
+                            <Background centered={true}>
+                                <RegistrationComponent />
+                            </Background>
+                        </Route>
+                        <Route exact path={"/"}>
+                            <Background centered={true}>
+                                <LoginComponent />
+                            </Background>
+                        </Route>
+                    </Switch>
+                </Router>
+            </UserContext.Provider>
+        </>
     );
 }
 
