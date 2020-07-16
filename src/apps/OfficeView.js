@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import { Button } from "../components/Inputs";
+import { Card } from "../styled/Card";
 
 export default function () {
     const { officeId } = useParams();
@@ -31,7 +32,7 @@ export default function () {
     };
 
     return (
-        <div>
+        <Card>
             <h1>{office.Name}</h1>
             <ul>
                 {office.Users.map((user) => (
@@ -42,7 +43,9 @@ export default function () {
                     </li>
                 ))}
             </ul>
-            <Button onClick={signout}>Signout</Button>
-        </div>
+            <Button className="lt-button lt-hover" onClick={signout}>
+                Signout
+            </Button>
+        </Card>
     );
 }

@@ -8,11 +8,9 @@ export default function () {
     const user = useContext(UserContext);
 
     const ws = useMemo(() => new WebSocket("ws://aff644e2496a.ngrok.io/"), []);
-    const initiator = new Peer({ initiator: true });
+    const initiator = new Peer({ initiator: true, trickle: false });
 
     ws.onmessage = (ev) => {
-        // console.log(ev.data)
-        // console.log(JSON.parse(ev.data))
         initiator.signal(JSON.parse(ev.data));
     };
 
@@ -22,7 +20,6 @@ export default function () {
 
     initiator.on("signal", (data) => {
         ws.addEventListener("open", (ev) => {
-            // console.log(data)
             ws.send(
                 JSON.stringify({
                     ...data,

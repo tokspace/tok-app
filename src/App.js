@@ -2,7 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
 import LoginComponent from "./apps/Login";
 import RegistrationComponent from "./apps/Registration";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Redirect,
+} from "react-router-dom";
 import firebase from "firebase/app";
 import UserContext from "./contexts/UserContext";
 import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
@@ -51,7 +56,6 @@ function App() {
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
-            console.log(firebaseUser);
             if (firebaseUser === null) {
                 setUser(null);
             } else {
@@ -72,6 +76,7 @@ function App() {
             }
         });
     }, []);
+
     return (
         <>
             <InvisibleTitleBar />
@@ -79,17 +84,19 @@ function App() {
                 <Router>
                     <Switch>
                         {user !== null && (
-                            <Background>
+                            <>
                                 <Route path={"/sessions/new-with-user/:userId"}>
                                     <SessionInitiator />
-                                </Route>
-                                <Route path={"/office/:officeId"}>
-                                    <OfficeView />
                                 </Route>
                                 <Route exact path="/">
                                     <Dashboard />
                                 </Route>
-                            </Background>
+                                <Route path={"/office/:officeId"}>
+                                    <Background>
+                                        <OfficeView />
+                                    </Background>
+                                </Route>
+                            </>
                         )}
                         <Route path="/register">
                             <Background centered={true}>
