@@ -15,7 +15,7 @@ export default function () {
             })
             .then((stream) => {
                 const webSocket = new WebSocket("ws://localhost:8080");
-                const initiator = new Peer({ initiator: true });
+                const initiator = new Peer({ initiator: true, stream: true });
 
                 webSocket.addEventListener("open", function () {
                     webSocket.send(user.uid);
@@ -45,17 +45,19 @@ export default function () {
                     console.debug(data);
                 });
 
-                // initiator.on("stream", function (stream) {
-                //     setAudioStream(stream);
-                //     const audioContext = new AudioContext();
-                //     const root = audioContext.createMediaStreamSource(stream);
-                //     const analyser = audioContext.createAnalyser();
+                initiator.on("stream", function (stream) {
+                    setAudioStream(stream);
+                    const audioContext = new AudioContext();
+                    const root = audioContext.createMediaStreamSource(stream);
+                    const analyser = audioContext.createAnalyser();
 
-                //     root.connect(analyser)
-                //     const frequencyData = new Uint8Array(analyser.frequencyBinCount);;
-                //     analyser.getByteFrequencyData(frequencyData);
-                //     console.debug(frequencyData);
-                // });
+                    root.connect(analyser);
+                    const frequencyData = new Uint8Array(
+                        analyser.frequencyBinCount,
+                    );
+                    analyser.getByteFrequencyData(frequencyData);
+                    console.debug(frequencyData);
+                });
             })
             .catch((err) => console.log(err));
     });

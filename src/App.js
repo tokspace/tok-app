@@ -81,19 +81,24 @@ function App() {
 
                 window.acceptingPeer = acceptingPeer;
 
-                // navigator.mediaDevices.getUserMedia({
-                //     audio: true
-                // }).then((track) => {
-                //     acceptingPeer.addTrack(track);
-                //     acceptingPeer.on('track', track => {
-                //         setAudioSource(track);
-                //     });
+                navigator.mediaDevices
+                    .getUserMedia({
+                        audio: true,
+                    })
+                    .then((stream) => {
+                        acceptingPeer.addStream(stream);
+                        acceptingPeer.on("stream", (stream) => {
+                            setAudioSource(stream);
+                        });
 
-                //     audioSource.play();
-                // }).catch((err) => {
-                //     console.log("catching an error from the acceptingPeer.on('connect') listener:");
-                //     console.error(err);
-                // });
+                        audioSource.play();
+                    })
+                    .catch((err) => {
+                        console.log(
+                            "catching an error from the acceptingPeer.on('connect') listener:",
+                        );
+                        console.error(err);
+                    });
             });
             acceptingPeer.on("data", function (data) {
                 console.debug(`Got a message: ${data}`);
@@ -142,7 +147,7 @@ function App() {
             <InvisibleTitleBar />
             <UserContext.Provider value={user}>
                 <Router>{routes}</Router>
-                {audioSource && <audio src={audioSource}></audio>}
+                {audioSource && <video src={audioSource}></video>}
             </UserContext.Provider>
         </>
     );
