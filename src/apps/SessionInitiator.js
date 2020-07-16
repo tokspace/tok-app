@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Peer from "simple-peer";
 import UserContext from "../contexts/UserContext";
@@ -7,32 +7,26 @@ export default function () {
     const { userId } = useParams();
     const user = useContext(UserContext);
 
-    const ws = useMemo(() => new WebSocket("ws://aff644e2496a.ngrok.io/"), []);
-    const initiator = new Peer({ initiator: true, trickle: false });
+    useEffect(function () {
+        const webSocket = new WebSocket("ws://localhost:8080");
+        const initiator = new Peer({ initiator: true });
 
-    ws.onmessage = (ev) => {
-        initiator.signal(JSON.parse(ev.data));
-    };
-
-    ws.addEventListener("open", (ev) => {
-        ws.send(user.uid);
-    });
-
-    initiator.on("signal", (data) => {
-        ws.addEventListener("open", (ev) => {
-            ws.send(
-                JSON.stringify({
-                    ...data,
+        webSocket.addEventListener("open", function () {
+            webSocket.send(user.uid);
+            initiator.on("signal", function (data) {
+                console.debug(data);
+                const message = Object.assign(data, {
                     target: userId,
-                }),
-            );
+                });
+                webSocket.send(JSON.stringify(message));
+            });
+        });
+
+        webSocket.addEventListener("message", function (ev) {
+            const data = JSON.parse(ev.data);
+            console.debug(data);
+            initiator.signal(data);
         });
     });
-
-    initiator.on("connect", (ev) => {
-        console.debug("YO");
-        initiator.send("YO WUT UP MY DOOD");
-    });
-
-    return <p>{ws.readyState}</p>;
+    return <p>Starting a session with {userId}</p>;
 }

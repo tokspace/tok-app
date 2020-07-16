@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import LoginComponent from "./apps/Login";
 import RegistrationComponent from "./apps/Registration";
@@ -35,82 +35,87 @@ Background.propTypes = {
 function App() {
     const [user, setUser] = useState(null);
 
-    const ws = useMemo(() => new WebSocket("ws://aff644e2496a.ngrok.io/"), []);
-    const acceptor = useMemo(() => new Peer(), []);
-    let signalTarget;
-
-    ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        acceptor.signal(data);
-        signalTarget = data.author;
-    };
-
-    acceptor.on("signal", (data) => {
-        ws.send(JSON.stringify({ ...data, target: signalTarget }));
-    });
-
-    acceptor.on("data", (data) => {
-        // got a data channel message
-        console.log(`got a message from ${signalTarget}: ${data}`);
-    });
-
     useEffect(() => {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
             if (firebaseUser === null) {
                 setUser(null);
-            } else {
-                ws.addEventListener("open", (ev) => {
-                    ws.send(firebaseUser.uid);
+                return;
+            }
+            firebase
+                .firestore()
+                .doc(`Users/${firebaseUser.uid}`)
+                .get()
+                .then((snapshot) => {
+                    setUser({
+                        tokProfile: snapshot.data(),
+                        ...firebaseUser,
+                    });
                 });
 
-                firebase
-                    .firestore()
-                    .doc(`Users/${firebaseUser.uid}`)
-                    .get()
-                    .then((snapshot) => {
-                        setUser({
-                            tokProfile: snapshot.data(),
-                            ...firebaseUser,
-                        });
+            const webSocket = new WebSocket("ws://localhost:8080");
+            const acceptingPeer = new Peer();
+
+            let lastAuthor;
+
+            webSocket.addEventListener("open", function () {
+                webSocket.send(firebaseUser.uid);
+                acceptingPeer.on("signal", function (data) {
+                    const message = Object.assign(data, {
+                        target: lastAuthor,
                     });
-            }
+                    webSocket.send(JSON.stringify(message));
+                });
+            });
+            webSocket.addEventListener("message", function (ev) {
+                const data = JSON.parse(ev.data);
+
+                lastAuthor = data.author;
+                acceptingPeer.signal(data);
+            });
         });
-    }, [ws]);
+    }, []);
+
+    let routes;
+    if (user === null) {
+        routes = (
+            <Switch>
+                <Route path="/register">
+                    <Background centered={true}>
+                        <RegistrationComponent />
+                    </Background>
+                </Route>
+                <Route path="/login">
+                    <Background centered={true}>
+                        <LoginComponent />
+                    </Background>
+                </Route>
+                <Redirect to="/login" />
+            </Switch>
+        );
+    } else {
+        routes = (
+            <Switch>
+                <Route path={"/sessions/new-with-user/:userId"}>
+                    <SessionInitiator />
+                </Route>
+                <Route path="/dashboard">
+                    <Dashboard />
+                </Route>
+                <Route path={"/office/:officeId"}>
+                    <Background>
+                        <OfficeView />
+                    </Background>
+                </Route>
+                <Redirect to="/dashboard" />
+            </Switch>
+        );
+    }
 
     return (
         <>
             <InvisibleTitleBar />
             <UserContext.Provider value={user}>
-                <Router>
-                    <Switch>
-                        {user !== null && (
-                            <>
-                                <Route path={"/sessions/new-with-user/:userId"}>
-                                    <SessionInitiator />
-                                </Route>
-                                <Route exact path="/">
-                                    <Dashboard />
-                                </Route>
-                                <Route path={"/office/:officeId"}>
-                                    <Background>
-                                        <OfficeView />
-                                    </Background>
-                                </Route>
-                            </>
-                        )}
-                        <Route path="/register">
-                            <Background centered={true}>
-                                <RegistrationComponent />
-                            </Background>
-                        </Route>
-                        <Route exact path="/">
-                            <Background centered={true}>
-                                <LoginComponent />
-                            </Background>
-                        </Route>
-                        <Redirect to="/" />
-                    </Switch>
-                </Router>
+                <Router>{routes}</Router>
             </UserContext.Provider>
         </>
     );
