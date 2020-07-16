@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 
 const RegistrationComponent = () => {
@@ -9,6 +9,8 @@ const RegistrationComponent = () => {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
+
+    const history = useHistory();
 
     return (
         <Card className="lt-card lt-shadow">
@@ -88,13 +90,10 @@ const RegistrationComponent = () => {
                                 },
                             );
 
-                            write
-                                .commit()
-                                .then(() =>
-                                    alert(
-                                        "Your profile was created successfully",
-                                    ),
-                                );
+                            write.commit().then(() => {
+                                alert("Your profile was created successfully");
+                                history.push("/");
+                            });
                         })
                         .catch((e) => {
                             alert(e.message);
