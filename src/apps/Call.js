@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import Webcam from "react-webcam";
 import UserContext from "../contexts/UserContext";
 import { PeerConnection } from "../websockets/Connection";
@@ -7,7 +7,10 @@ const WebcamComponent = () => <Webcam />;
 
 const Call = () => {
     const user = useContext(UserContext);
-    useMemo(() => new PeerConnection(user), [user]);
+    // new PeerConnection(user)
+    useEffect(() => {
+        new PeerConnection(user);
+    }, []);
     return null;
 };
 
