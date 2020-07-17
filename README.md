@@ -16,7 +16,6 @@ You can use both video and audio calls. Text feature would be available in the f
 You can also set your availability off whenever you don't want your co-workers lurking at your desk.
 
 
-
 ## Technologies Used:
 
 - We have used Electron+React to make the frontend look sweet!:candy:
@@ -39,6 +38,7 @@ You can also set your availability off whenever you don't want your co-workers l
  
 - Weekly Analytics (Coming Soon :running:) :bar_chart:
 
+
 ## Setting up on your machine
 
 For setting the development environment on your machine:
@@ -58,6 +58,6 @@ For setting the development environment on your machine:
 - Run `npm run start` to start the app
 
 
-#### Made with :heart: by the turnips [Aanad](https://github.com/akainth015), [Jacky](https://github.com/jackyzha0), [Nick](https://github.com/nchaloult), [Yashika](https://github.com/yashika51)
+#### Made with :heart: by the turnips [Aanand](https://github.com/akainth015), [Jacky](https://github.com/jackyzha0), [Nick](https://github.com/nchaloult), [Yashika](https://github.com/yashika51)
 
 
