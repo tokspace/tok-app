@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Card } from "../styled/Card";
 import { Button } from "../components/Inputs";
 
@@ -6,6 +7,8 @@ const Settings = () => {
     const [storedProcesses, setStoredProcesses] = useState([""]);
     const [runningProcesses, setRunningProcesses] = useState([]);
     const [newProcessToAdd, setNewProcessToAdd] = useState("");
+
+    const history = useHistory();
 
     useEffect(() => {
         // Fetch configured processes from local storage.
@@ -78,6 +81,11 @@ const Settings = () => {
                     </Button>
                 </>
             )}
+            <Button
+                className="lt-button lt-hover"
+                onClick={() => history.goBack()}>
+                Back
+            </Button>
         </Card>
     );
 };
