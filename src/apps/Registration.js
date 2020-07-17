@@ -63,10 +63,11 @@ const RegistrationComponent = () => {
                 });
 
                 write.update(db.doc(`Offices/3mfArDn3ejO0oVQDwTdJ`), {
-                    Users: firebase.firestore.FieldValue.arrayUnion({
+                    [`Users.${user.uid}`]: {
                         name,
+                        isOnline: true,
                         user: userRef,
-                    }),
+                    },
                 });
 
                 write.commit().then(() => {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
-import CallContext from "../contexts/CallContext";
 import { Link, useParams, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import { Button, SecondaryButton } from "../components/Inputs";
@@ -13,22 +12,32 @@ const Desk = styled.div`
     padding: 8px;
 `;
 
-export default () => {
+export default ({ call }) => {
     const user = useContext(UserContext);
-    const call = useContext(CallContext);
     const { officeId } = useParams();
     const [office, setOfficeState] = useState({
-        Name: "Name",
+        Name: "",
         Sessions: [],
-        Users: [],
+        Users: {},
     });
 
+    // initial state setup
+    setIsOnline(true);
+
     function setIsOnline(isOnline) {
-        return firebase
-            .firestore()
-            .doc(`Offices/${officeId}`)
-            .update({
-                [`users.${user.uid}.isOnline`]: isOnline,
+        console.log(office);
+        const db = firebase.firestore();
+        const write = db.batch();
+        write.update(db.doc(`Offices/${officeId}`), {
+            [`Users.${user.uid}.isOnline`]: isOnline,
+        });
+        write
+            .commit()
+            .then(() => {
+                // console.log(office.Users[user.uid])
+            })
+            .catch((e) => {
+                console.log(`e: ${e}`);
             });
     }
 
@@ -48,13 +57,20 @@ export default () => {
             .auth()
             .signOut()
             .then(() => {
+                setIsOnline(false);
                 history.push("/");
             });
     };
-    const onlineUsers = office.Users.filter(
-        (callee) => callee.user.id !== user.uid && callee.isOnline,
-    );
 
+    const onlineUsers = Object.keys(office.Users)
+        .map((e) => {
+            const u = office.Users[e];
+            u.uid = e;
+            return u;
+        })
+        .filter((callee) => callee.uid !== user.uid);
+
+    const isOnline = office.Users[user.uid] && office.Users[user.uid].isOnline;
     return (
         <Card className="lt-card">
             <h1>
@@ -69,6 +85,7 @@ export default () => {
                 Step Away for 1 hr
             </Button>
             <h2>Logged in as {user.tokProfile.name}</h2>
+            <p>Status: {isOnline ? "Online" : "Busy"}</p>
             {onlineUsers.map((callee) => (
                 <Desk className="lt-card">
                     <h3 style={{ flexGrow: 1 }}>{callee.name}</h3>
