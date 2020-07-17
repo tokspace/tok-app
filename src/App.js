@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 import firebase from "firebase/app";
 import UserContext from "./contexts/UserContext";
-import CallContext from "./contexts/CallContext";
 import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
 import OfficeView from "./apps/OfficeView";
 import PropTypes from "prop-types";
@@ -54,7 +53,10 @@ function App() {
                         ...firebaseUser,
                     });
                 });
-            setCall(new PeerConnection(firebaseUser));
+            const connection = new PeerConnection(firebaseUser);
+            connection.ws.addEventListener("open", function () {
+                setCall(connection);
+            });
         });
     }, []);
 
@@ -77,8 +79,8 @@ function App() {
             );
         } else {
             return (
-                <CallContext.Provider value={call}>
-                    <Call />
+                <>
+                    {call && call.p && <Call call={call} />}
                     <Switch>
                         <Route path={"/sessions/new-with-user/:userId"}>
                             <SessionInitiator />
@@ -98,7 +100,7 @@ function App() {
                         </Route>
                         <Redirect to="/dashboard" />
                     </Switch>
-                </CallContext.Provider>
+                </>
             );
         }
     }

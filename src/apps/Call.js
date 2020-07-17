@@ -1,12 +1,16 @@
-import React, { useContext, useEffect, useRef } from "react";
-import UserContext from "../contexts/UserContext";
-import Webcam from "react-webcam";
-import { PeerConnection } from "../websockets/Connection";
+import React, { useEffect, useRef } from "react";
 
-const WebcamComponent = () => <Webcam />;
+const Call = ({ call }) => {
+    const videoRef = useRef();
 
-const Call = () => {
-    return null;
+    useEffect(() => {
+        call.p.on("stream", (stream) => {
+            console.debug(stream);
+            videoRef.current.srcObject = stream;
+        });
+    }, [call]);
+
+    return <video ref={videoRef} autoPlay={true}></video>;
 };
 
 export default Call;
