@@ -11,7 +11,7 @@ export function NewPeer(user, isInitiator = false, target = undefined) {
             const ws = new WebSocket(
                 "ws://tokspace-websocket-signaling.herokuapp.com/",
             );
-            const p = new Peer({ initiator: isInitiator, stream: stream });
+            let p;
 
             let from;
             ws.onmessage = (event) => {
@@ -24,6 +24,7 @@ export function NewPeer(user, isInitiator = false, target = undefined) {
                 ws.onopen = () => {
                     console.log("initiating connection as initiator");
                     ws.send(user.uid);
+                    p = new Peer({ initiator: isInitiator, stream });
                     p.on("signal", (data) => {
                         const payload = {
                             target: target,
