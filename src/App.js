@@ -10,12 +10,14 @@ import {
 } from "react-router-dom";
 import firebase from "firebase/app";
 import UserContext from "./contexts/UserContext";
+import CallContext from "./contexts/CallContext";
 import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
 import OfficeView from "./apps/OfficeView";
 import PropTypes from "prop-types";
 import Dashboard from "./apps/Dashboard";
-import { NewPeer } from "./websockets/Connection";
 import SessionInitiator from "./apps/SessionInitiator";
+import { PeerConnection } from "./websockets/Connection";
+import Call from "./apps/Call";
 import Settings from "./apps/Settings";
 
 const Background = styled.div`
@@ -35,6 +37,7 @@ Background.propTypes = {
 
 function App() {
     const [user, setUser] = useState(null);
+    const [call, setCall] = useState(null);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -52,8 +55,7 @@ function App() {
                         ...firebaseUser,
                     });
                 });
-
-            NewPeer(firebaseUser);
+            setCall(new PeerConnection(firebaseUser));
         });
     }, []);
 
@@ -61,7 +63,6 @@ function App() {
         if (user === null) {
             return (
                 <Switch>
-                    {/* {NewPeer(user)} */}
                     <Route path="/register">
                         <Background centered={true}>
                             <RegistrationComponent />
@@ -77,23 +78,26 @@ function App() {
             );
         } else {
             return (
-                <Switch>
-                    <Route path={"/sessions/new-with-user/:userId"}>
-                        <SessionInitiator />
-                    </Route>
-                    <Route path="/dashboard">
-                        <Dashboard />
-                    </Route>
-                    <Route path={"/office/:officeId"}>
-                        <Background>
-                            <OfficeView />
-                        </Background>
-                    </Route>
-                    <Route path="/settings">
-                        <Settings />
-                    </Route>
-                    <Redirect to="/dashboard" />
-                </Switch>
+                <CallContext.Provider value={call}>
+                    <Call />
+                    <Switch>
+                        <Route path={"/sessions/new-with-user/:userId"}>
+                            <SessionInitiator />
+                        </Route>
+                        <Route path="/dashboard">
+                            <Dashboard />
+                        </Route>
+                        <Route path={"/office/:officeId"}>
+                            <Background>
+                                <OfficeView />
+                            </Background>
+                        </Route>
+                        <Route path="/settings">
+                            <Settings />
+                        </Route>
+                        <Redirect to="/dashboard" />
+                    </Switch>
+                </CallContext.Provider>
             );
         }
     }
