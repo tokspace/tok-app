@@ -60,6 +60,7 @@ export class PeerConnection {
     setupListener() {
         console.log("initiating connection as listener");
         this.ws.send(this.user.uid);
+        setIsOnline(this.user, false);
         this.p.on("signal", (data) => {
             console.log(`signaling back to ${this.from}...`);
             const resultPayload = {

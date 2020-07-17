@@ -90,7 +90,7 @@ function App() {
                         </Route>
                         <Route path={"/office/:officeId"}>
                             <Background>
-                                <OfficeView />
+                                <OfficeView call={call} />
                             </Background>
                         </Route>
                         <Route path="/settings">
