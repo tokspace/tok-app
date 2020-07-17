@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import { Link, useParams, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
-import { Button } from "../components/Inputs";
+import { Button, SecondaryButton } from "../components/Inputs";
 import { Card } from "../styled/Card";
 
 export default function () {
@@ -51,12 +51,12 @@ export default function () {
             <Button to="/" className="lt-button lt-hover" onClick={signout}>
                 Signout
             </Button>
-            <Button
+            <SecondaryButton
                 to="/settings"
                 className="lt-button lt-hover"
                 onClick={() => history.push("/settings")}>
                 Settings
-            </Button>
+            </SecondaryButton>
         </Card>
     );
 }

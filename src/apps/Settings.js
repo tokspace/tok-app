@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Card } from "../styled/Card";
-import { Button } from "../components/Inputs";
+import { SettingsCard } from "../styled/Card";
+import { Button, SecondaryButton } from "../components/Inputs";
 
 const Settings = () => {
     const [storedProcesses, setStoredProcesses] = useState([""]);
@@ -46,7 +46,7 @@ const Settings = () => {
     };
 
     return (
-        <Card className="lt-card lt-shadow">
+        <SettingsCard className="lt-card lt-shadow">
             <h2>Settings</h2>
             <h3>Configured Processes</h3>
             {storedProcesses.map((process) => (
@@ -81,12 +81,12 @@ const Settings = () => {
                     </Button>
                 </>
             )}
-            <Button
+            <SecondaryButton
                 className="lt-button lt-hover"
                 onClick={() => history.goBack()}>
                 Back
-            </Button>
-        </Card>
+            </SecondaryButton>
+        </SettingsCard>
     );
 };
 

@@ -93,7 +93,9 @@ function App() {
                             </Background>
                         </Route>
                         <Route path="/settings">
-                            <Settings />
+                            <Background centered={true}>
+                                <Settings />
+                            </Background>
                         </Route>
                         <Redirect to="/dashboard" />
                     </Switch>
