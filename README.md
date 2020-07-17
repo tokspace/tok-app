@@ -1,7 +1,7 @@
 # 🦜 TokSpace
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/takiuddin93/ChatApp/commits/master)
-[![MIT Licenced](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/takiuddin93/ChatApp/blob/master/LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/tokspace/tok-app/commits/master)
+[![MIT Licenced](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/tokspace/tok-app/blob/master/LICENSE)
 
 We have built a platform that enables remote workplace collaboration. Our communication service allows you to "approach the desks" of your coworkers, and join an impromptu voice call with them. Users can join an "office" of other users. Once a user joins an office, they can see all of the other office members' statuses (whether they're available for a call or "away for their desk"), and if anyone else is talking at someone's desk.
 
