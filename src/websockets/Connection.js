@@ -24,6 +24,12 @@ export class PeerConnection {
         };
     }
 
+    close() {
+        console.log("cleaning up sockets...");
+        this.ws.close();
+        this.p.destroy();
+    }
+
     setupInitiator() {
         console.log("initiating connection as initiator");
         this.ws.send(this.user.uid);

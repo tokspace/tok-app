@@ -8,3 +8,7 @@ export const Card = styled.div`
     vertical-align: middle;
     text-align: center;
 `;
+
+export const SettingsCard = styled(Card)`
+    width: 50vw;
+`;

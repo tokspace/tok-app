@@ -24,6 +24,12 @@ export const Button = styled.button`
     font-family: "Roboto Mono", monospace;
 `;
 
+export const SecondaryButton = styled(Button)`
+    color: var(--lt-colours-dark);
+    background-color: var(--lt-colours-light);
+    border: 1px solid var(--lt-colours-dark);
+`;
+
 export const TextInput = (props) => {
     return (
         <RelPositioning>

@@ -47,8 +47,7 @@ function App() {
             firebase
                 .firestore()
                 .doc(`Users/${firebaseUser.uid}`)
-                .get()
-                .then((snapshot) => {
+                .onSnapshot((snapshot) => {
                     setUser({
                         tokProfile: snapshot.data(),
                         ...firebaseUser,
@@ -95,7 +94,9 @@ function App() {
                             </Background>
                         </Route>
                         <Route path="/settings">
-                            <Settings />
+                            <Background centered={true}>
+                                <Settings />
+                            </Background>
                         </Route>
                         <Redirect to="/dashboard" />
                     </Switch>
