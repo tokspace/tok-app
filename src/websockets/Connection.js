@@ -9,7 +9,7 @@ export function NewPeer(user, isInitiator = false, target = undefined) {
         })
         .then((stream) => {
             const ws = new WebSocket(
-                "ws://tokspace-websocket-signaling.herokuapp.com/",
+                "ws://ec2-54-197-132-43.compute-1.amazonaws.com:8080/",
             );
             let p;
 
@@ -20,8 +20,8 @@ export function NewPeer(user, isInitiator = false, target = undefined) {
                 p.signal(data.data);
             };
 
-            if (isInitiator) {
-                ws.onopen = () => {
+            ws.onopen = () => {
+                if (isInitiator) {
                     console.log("initiating connection as initiator");
                     ws.send(user.uid);
                     p = new Peer({ initiator: isInitiator, stream });
@@ -33,47 +33,43 @@ export function NewPeer(user, isInitiator = false, target = undefined) {
                         console.log(`signalling to ${target}`);
                         ws.send(JSON.stringify(payload));
                     });
-                };
-
-                // can use this for chat or something
-                p.on("connect", () => {
-                    console.log("initiator connect event listener fired");
-                    p.send("yeeeet");
-                });
-            } else {
-                ws.onopen = () => {
+                    // can use this for chat or something
+                    p.on("connect", () => {
+                        console.log("initiator connect event listener fired");
+                        p.send("yeeeet");
+                    });
+                } else {
                     console.log("initiating connection as listener");
                     ws.send(user.uid);
-                };
+                    p.on("signal", (data) => {
+                        console.log(`signaling back to ${from}...`);
+                        const resultPayload = {
+                            target: from,
+                            data: data,
+                        };
+                        ws.send(JSON.stringify(resultPayload));
+                    });
+                }
 
-                p.on("signal", (data) => {
-                    console.log(`signaling back to ${from}...`);
-                    const resultPayload = {
-                        target: from,
-                        data: data,
-                    };
-                    ws.send(JSON.stringify(resultPayload));
+                p.on("data", (data) => {
+                    console.log(`got some response: ${data}`);
                 });
-            }
 
-            p.on("data", (data) => {
-                console.log(`got some response: ${data}`);
-            });
+                // video/audio calling
+                p.on("stream", (stream) => {
+                    console.log("some streaming shit yeeee");
+                    // // got remote video stream, now let's show it in a video tag
+                    // var video = document.querySelector('video')
 
-            // video/audio calling
-            p.on("stream", (stream) => {
-                console.log("some streaming shit yeeee");
-                // // got remote video stream, now let's show it in a video tag
-                // var video = document.querySelector('video')
+                    // if ('srcObject' in video) {
+                    //     video.srcObject = stream
+                    // } else {
+                    //     video.src = window.URL.createObjectURL(stream) // for older browsers
+                    // }
 
-                // if ('srcObject' in video) {
-                //     video.srcObject = stream
-                // } else {
-                //     video.src = window.URL.createObjectURL(stream) // for older browsers
-                // }
-
-                // video.play()
-            });
+                    // video.play()
+                });
+            };
         })
         .catch((e) => {
             // swallow error
