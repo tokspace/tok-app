@@ -21,11 +21,16 @@ const ErrorMessage = ({ message, timeout, setMessage }) => {
     const [active, setActive] = useState(false);
 
     useEffect(() => {
+        let mounted = true;
         setActive(true);
         setTimeout(() => {
-            setActive(false);
-            setTimeout(() => setMessage(""), 300);
+            if (mounted) {
+                setActive(false);
+                setTimeout(() => setMessage(""), 300);
+            }
         }, timeout);
+
+        return () => (mounted = false);
     }, [message, timeout, setMessage]);
 
     return <ErrMsg active={active}>{message}</ErrMsg>;
