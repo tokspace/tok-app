@@ -8,38 +8,33 @@ export class PeerConnection {
         this.targetUser = targetUser;
         this.stream = null;
 
-        navigator.mediaDevices
-            .getUserMedia({
-                video: true,
-                audio: true,
-            })
-            .then((stream) => {
-                this.ws = new WebSocket(
-                    "ws://ec2-54-197-132-43.compute-1.amazonaws.com:8080/",
-                );
-                this.ws.onopen = () => {
-                    this.ws.onmessage = (event) => {
-                        const data = JSON.parse(event.data);
-                        this.from = data.origin;
-                        this.p.signal(data.data);
-                    };
-                    this.p = new Peer({ initiator: isInitiator, stream });
-                    // setIsOnline(user, true)
-                    this.isInitiator
-                        ? this.setupInitiator()
-                        : this.setupListener();
+        this.ws = new WebSocket(
+            "ws://ec2-54-197-132-43.compute-1.amazonaws.com:8080/",
+        );
+        this.ws.onopen = () => {
+            this.ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                this.from = data.origin;
+                this.p.signal(data.data);
+            };
+            this.p = new Peer({ initiator: isInitiator });
+            this.isInitiator ? this.setupInitiator() : this.setupListener();
 
-                    this.setupCommon();
-                };
-            })
-            .catch((e) => {
-                console.warn(e);
-            });
+            this.setupCommon();
+        };
     }
 
     setupInitiator() {
         console.log("initiating connection as initiator");
         this.ws.send(this.user.uid);
+        navigator.mediaDevices
+            .getUserMedia({
+                audio: true,
+                video: true,
+            })
+            .then((stream) => this.p.addStream(stream))
+            .catch((err) => alert(err.message));
+
         this.p.on("signal", (data) => {
             const payload = {
                 target: this.targetUser,
@@ -66,6 +61,15 @@ export class PeerConnection {
                 data: data,
             };
             this.ws.send(JSON.stringify(resultPayload));
+        });
+        this.p.on("connect", () => {
+            navigator.mediaDevices
+                .getUserMedia({
+                    audio: true,
+                    video: false,
+                })
+                .then(this.p.addStream)
+                .catch((err) => alert(err.message));
         });
     }
 
@@ -100,7 +104,7 @@ function setIsCalling(user, isCalling) {
     });
 }
 
-function setIsOnline(user, isOnline) {
+export function setIsOnline(user, isOnline) {
     firebase.firestore().doc(`Users/${user.uid}`).update({
         isOnline: isOnline,
     });

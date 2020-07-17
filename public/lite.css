@@ -80,10 +80,15 @@ ul.lt-hl li {
   padding: 0.5em 2em;
   border-radius: 5px;
   margin-bottom: 1em;
-  margin-right: 1em;
+  /* margin-right: 1em; */
   cursor: pointer;
   border: none;
   font-size: 0.8em;
+  text-decoration: none;
+}
+
+.nomrgn {
+  margin: 0;
 }
 
 .lt-round {

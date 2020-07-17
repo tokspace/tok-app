@@ -20,7 +20,7 @@ export const Button = styled.button`
     width: 100%;
     font-weight: 900;
     padding: calc(0.8em - 1px);
-    margin-top: 2em;
+    /* margin-top: 2em; */
     font-family: "Roboto Mono", monospace;
 `;
 

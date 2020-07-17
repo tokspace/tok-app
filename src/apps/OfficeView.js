@@ -4,6 +4,13 @@ import { Link, useParams, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import { Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
+import styled from "styled-components";
+
+const Desk = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 8px;
+`;
 
 export default function () {
     const user = useContext(UserContext);
@@ -13,6 +20,15 @@ export default function () {
         Sessions: [],
         Users: [],
     });
+
+    function setIsOnline(isOnline) {
+        return firebase
+            .firestore()
+            .doc(`Offices/${officeId}`)
+            .update({
+                [`users.${user.uid}.isOnline`]: isOnline,
+            });
+    }
 
     useEffect(() => {
         return firebase
@@ -32,30 +48,43 @@ export default function () {
                 history.push("/");
             });
     };
+    const onlineUsers = office.Users.filter(
+        (callee) => callee.user.id !== user.uid && callee.isOnline,
+    );
 
     return (
-        <Card>
-            <h1>{office.Name}</h1>
-            <h2>Logged in as {user.tokProfile.name}</h2>
-            <ul>
-                {office.Users.filter(
-                    (callee) => callee.user.id !== user.uid,
-                ).map((callee) => (
-                    <li key={callee.user.id}>
-                        <Link to={`/sessions/new-with-user/${callee.user.id}`}>
-                            {callee.name}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-            <Button to="/" className="lt-button lt-hover" onClick={signout}>
-                Signout
+        <Card className="lt-card">
+            <h1>
+                <b>{office.Name}</b>
+            </h1>
+            <Button
+                className="lt-button"
+                onClick={() => {
+                    setIsOnline(false);
+                    setTimeout(() => setIsOnline(true), 1000 * 60 * 60);
+                }}>
+                Step Away for 1 hr
             </Button>
+            <h2>Logged in as {user.tokProfile.name}</h2>
+            {onlineUsers.map((callee) => (
+                <Desk className="lt-card">
+                    <h3 style={{ flexGrow: 1 }}>{callee.name}</h3>
+                    <Link
+                        to={`/sessions/new-with-user/${callee.user.id}`}
+                        className="lt-button nomrgn">
+                        Pull Up
+                    </Link>
+                </Desk>
+            ))}
+            {onlineUsers.length === 0 && <p>Nobody is available right now</p>}
             <Button
                 to="/settings"
                 className="lt-button lt-hover"
                 onClick={() => history.push("/settings")}>
                 Settings
+            </Button>
+            <Button to="/" className="lt-button lt-hover" onClick={signout}>
+                Signout
             </Button>
         </Card>
     );

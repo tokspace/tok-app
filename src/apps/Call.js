@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useRef } from "react";
-import CallContext from "../contexts/CallContext";
+import React, { useEffect, useRef } from "react";
 
-const Call = () => {
-    const call = useContext(CallContext);
+const Call = ({ call }) => {
     const videoRef = useRef();
 
     useEffect(() => {
