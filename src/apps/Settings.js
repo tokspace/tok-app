@@ -52,18 +52,11 @@ const Settings = () => {
             {storedProcesses.map((process) => (
                 <p key={process}>{process}</p>
             ))}
-            {runningProcesses.length <= 0 && (
-                <>
-                    <p className="subtext">
-                        You haven't configured your availability status to
-                        change if any processes are running.
-                    </p>
-                    <Button
-                        className="lt-button lt-hover"
-                        onClick={async () => await handleChooseANewProcess()}>
-                        Add a New Process
-                    </Button>
-                </>
+            {storedProcesses.length <= 0 && (
+                <p className="subtext">
+                    You haven't configured your availability status to change if
+                    any processes are running.
+                </p>
             )}
             {runningProcesses.length > 0 && (
                 <>
@@ -81,6 +74,11 @@ const Settings = () => {
                     </Button>
                 </>
             )}
+            <Button
+                className="lt-button lt-hover"
+                onClick={async () => await handleChooseANewProcess()}>
+                Add a New Process
+            </Button>
             <SecondaryButton
                 className="lt-button lt-hover"
                 onClick={() => history.goBack()}>
