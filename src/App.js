@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 import Dashboard from "./apps/Dashboard";
 import { NewPeer } from "./websockets/Connection";
 import SessionInitiator from "./apps/SessionInitiator";
+import Settings from "./apps/Settings";
 
 const Background = styled.div`
     ${(props) =>
@@ -87,6 +88,9 @@ function App() {
                         <Background>
                             <OfficeView />
                         </Background>
+                    </Route>
+                    <Route path="/settings">
+                        <Settings />
                     </Route>
                     <Redirect to="/dashboard" />
                 </Switch>

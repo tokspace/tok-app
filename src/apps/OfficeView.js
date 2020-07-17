@@ -46,6 +46,12 @@ export default function () {
             <Button to="/" className="lt-button lt-hover" onClick={signout}>
                 Signout
             </Button>
+            <Button
+                to="/settings"
+                className="lt-button lt-hover"
+                onClick={() => history.push("/settings")}>
+                Settings
+            </Button>
         </Card>
     );
 }
