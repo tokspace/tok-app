@@ -12,7 +12,9 @@ const RegistrationComponent = () => {
     const [confirmPass, setConfirmPass] = useState("");
     const [errMsg, setErrMsg] = useState("");
 
-    const validateForm = () => {
+    const validateForm = (e) => {
+        e.preventDefault();
+
         // pass length
         if (pass.length < 6) {
             setErrMsg("Password must be > 6 characters");
