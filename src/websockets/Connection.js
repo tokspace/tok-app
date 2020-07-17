@@ -1,11 +1,9 @@
-import { useContext } from "react";
 import Peer from "simple-peer";
 import firebase from "firebase/app";
-import UserContext from "../contexts/UserContext";
 
 export class PeerConnection {
-    constructor(isInitiator = false, targetUser = undefined) {
-        this.user = useContext(UserContext);
+    constructor(user, isInitiator = false, targetUser = undefined) {
+        this.user = user;
         this.isInitiator = isInitiator;
         this.targetUser = targetUser;
         this.ws = new WebSocket(
@@ -25,6 +23,7 @@ export class PeerConnection {
                 };
 
                 this.ws.onopen = () => {
+                    console.log("???");
                     this.p = new Peer({ initiator: isInitiator, stream });
                     // setIsOnline(user, true)
                     this.isInitiator
