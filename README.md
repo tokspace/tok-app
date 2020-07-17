@@ -40,10 +40,11 @@ You can also set your availability off whenever you don't want your co-workers l
 
 ## Let's take a look!
 
-<img src="https://github.com/tokspace/tok-app/blob/master/public/screenshots/sign-up.png" width="400"/> <img src="https://github.com/tokspace/tok-app/blob/master/public/screenshots/login.png" width="475"/>
+<img src="https://github.com/tokspace/tok-app/blob/master/public/screenshots/sign-up.png" width="400"/> <img src="https://github.com/tokspace/tok-app/blob/master/public/screenshots/login.png" width="400"/>
 
 <img src="https://github.com/tokspace/tok-app/blob/master/public/screenshots/office-view.png" width="450"/> 
 <img src="https://github.com/tokspace/tok-app/blob/master/public/screenshots/settings.png" width="450"/> 
+
 ## Setting up on your machine
 
 For setting the development environment on your machine:
