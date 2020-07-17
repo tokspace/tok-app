@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import UserContext from "../contexts/UserContext";
 import { Link, useParams, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import { Button } from "../components/Inputs";
 import { Card } from "../styled/Card";
 
 export default function () {
+    const user = useContext(UserContext);
     const { officeId } = useParams();
     const [office, setOfficeState] = useState({
         Name: "Name",
@@ -34,11 +36,14 @@ export default function () {
     return (
         <Card>
             <h1>{office.Name}</h1>
+            <h2>Logged in as {user.tokProfile.name}</h2>
             <ul>
-                {office.Users.map((user) => (
-                    <li key={user.user.id}>
-                        <Link to={`/sessions/new-with-user/${user.user.id}`}>
-                            {user.name}
+                {office.Users.filter(
+                    (callee) => callee.user.id !== user.uid,
+                ).map((callee) => (
+                    <li key={callee.user.id}>
+                        <Link to={`/sessions/new-with-user/${callee.user.id}`}>
+                            {callee.name}
                         </Link>
                     </li>
                 ))}

@@ -14,8 +14,8 @@ import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
 import OfficeView from "./apps/OfficeView";
 import PropTypes from "prop-types";
 import Dashboard from "./apps/Dashboard";
-import { NewPeer } from "./websockets/Connection";
 import SessionInitiator from "./apps/SessionInitiator";
+import Call from "./apps/Call";
 
 const Background = styled.div`
     ${(props) =>
@@ -51,8 +51,6 @@ function App() {
                         ...firebaseUser,
                     });
                 });
-
-            NewPeer(firebaseUser);
         });
     }, []);
 
@@ -60,7 +58,6 @@ function App() {
         if (user === null) {
             return (
                 <Switch>
-                    {/* {NewPeer(user)} */}
                     <Route path="/register">
                         <Background centered={true}>
                             <RegistrationComponent />
@@ -76,20 +73,23 @@ function App() {
             );
         } else {
             return (
-                <Switch>
-                    <Route path={"/sessions/new-with-user/:userId"}>
-                        <SessionInitiator />
-                    </Route>
-                    <Route path="/dashboard">
-                        <Dashboard />
-                    </Route>
-                    <Route path={"/office/:officeId"}>
-                        <Background>
-                            <OfficeView />
-                        </Background>
-                    </Route>
-                    <Redirect to="/dashboard" />
-                </Switch>
+                <>
+                    <Call user={user} />
+                    <Switch>
+                        <Route path={"/sessions/new-with-user/:userId"}>
+                            <SessionInitiator />
+                        </Route>
+                        <Route path="/dashboard">
+                            <Dashboard />
+                        </Route>
+                        <Route path={"/office/:officeId"}>
+                            <Background>
+                                <OfficeView />
+                            </Background>
+                        </Route>
+                        <Redirect to="/dashboard" />
+                    </Switch>
+                </>
             );
         }
     }
