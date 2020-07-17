@@ -5,7 +5,7 @@ import { PeerConnection } from "../websockets/Connection";
 const WebcamComponent = () => <Webcam />;
 
 const Call = ({ user }) => {
-    useMemo(() => new PeerConnection(user), [user]);
+    useMemo(() => new PeerConnection(user), []);
     return null;
 };
 
