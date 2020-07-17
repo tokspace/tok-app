@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "../styled/Card";
+import { Button } from "../components/Inputs";
 
 const Settings = () => {
     const [storedProcesses, setStoredProcesses] = useState([""]);
-    // const [runningProcesses, setRunningProcesses] = useState([""]);
+    const [runningProcesses, setRunningProcesses] = useState([]);
+    const [newProcessToAdd, setNewProcessToAdd] = useState("");
 
     useEffect(() => {
         // Fetch configured processes from local storage.
@@ -22,18 +24,54 @@ const Settings = () => {
         fetchProcessesOnDisk();
     }, []);
 
-    // TODO: write a button handler which asks for all running processes.
+    const handleChooseANewProcess = async () => {
+        let processesList = await ipcRenderer.invoke("processesRequest", null);
+        processesList = processesList.map(
+            (process) => `${process.name} (PID: ${process.pid})`,
+        );
+        setRunningProcesses(processesList);
+    };
+
+    const handleNewProcessPress = async () => {
+        // This assumes that the write to disk goes according to plan...
+        // oh well :)
+        await ipcRenderer.invoke("saveNewConfiguredProcesses", [
+            ...storedProcesses,
+            newProcessToAdd,
+        ]);
+        setStoredProcesses([...storedProcesses, newProcessToAdd]);
+    };
 
     return (
         <Card className="lt-card lt-shadow">
             <h2>Settings</h2>
-            <h3>Availability Status</h3>
+            <h3>Configured Processes</h3>
             {storedProcesses.map((process) => (
-                <p>{process}</p>
+                <p key={process}>{process}</p>
             ))}
-            <p className="subtext">
-                Add a new one! Dropdown will live here soon.
-            </p>
+            {runningProcesses.length <= 0 && (
+                <Button
+                    className="lt-button lt-hover"
+                    onClick={async () => await handleChooseANewProcess()}>
+                    Add a New Process
+                </Button>
+            )}
+            {runningProcesses.length > 0 && (
+                <>
+                    <select
+                        value={newProcessToAdd}
+                        onChange={(e) => setNewProcessToAdd(e.target.value)}>
+                        {runningProcesses.map((process) => (
+                            <option key={process}>{process}</option>
+                        ))}
+                    </select>
+                    <Button
+                        className="lt-button lt-hover"
+                        onClick={async () => await handleNewProcessPress()}>
+                        Add
+                    </Button>
+                </>
+            )}
         </Card>
     );
 };

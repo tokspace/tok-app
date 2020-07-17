@@ -93,6 +93,6 @@ ipcMain.handle("configuredProcessesRequest", () =>
 ipcMain.handle(
     "saveNewConfiguredProcesses",
     (_event, newConfiguredProcesses) => {
-        store.set(newConfiguredProcesses);
+        store.set("storedProcesses", newConfiguredProcesses);
     },
 );
