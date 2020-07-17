@@ -13,7 +13,6 @@ export default function () {
 
     return (
         <>
-            {/* {audioStream && <audio autoPlay={true} src={audioStream}></audio>} */}
             <p>Starting a session with {userId}</p>
         </>
     );

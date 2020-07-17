@@ -6,6 +6,7 @@ export class PeerConnection {
         this.user = user;
         this.isInitiator = isInitiator;
         this.targetUser = targetUser;
+        this.stream = null;
 
         navigator.mediaDevices
             .getUserMedia({
@@ -75,10 +76,7 @@ export class PeerConnection {
 
         // video calling
         this.p.on("stream", (stream) => {
-            console.log("some streaming shit yeeee");
-
             setIsCalling(this.user, true);
-            // TODO: implement
         });
 
         // audio calling

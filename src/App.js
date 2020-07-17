@@ -79,7 +79,7 @@ function App() {
         } else {
             return (
                 <CallContext.Provider value={call}>
-                    <Call />
+                    {call.p && <Call />}
                     <Switch>
                         <Route path={"/sessions/new-with-user/:userId"}>
                             <SessionInitiator />
