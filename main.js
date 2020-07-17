@@ -96,3 +96,21 @@ ipcMain.handle(
         store.set("storedProcesses", newConfiguredProcesses);
     },
 );
+
+// Listen for the front-end to ask for a "refreshed" availability status based
+// on whether any configured processes are running or not.
+ipcMain.handle("refreshAvailabilityProcessRequest", async () => {
+    try {
+        const configuredProcesses = store.get("storedProcesses");
+        const runningProcesses = await psList();
+        configuredProcesses.array.forEach((process) => {
+            if (runningProcesses.includes(process)) {
+                return true;
+            }
+        });
+        return false;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+});
