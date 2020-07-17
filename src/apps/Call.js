@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Webcam from "react-webcam";
 import { PeerConnection } from "../websockets/Connection";
 
 const WebcamComponent = () => <Webcam />;
 
 const Call = ({ user }) => {
-    new PeerConnection(user);
+    useMemo(() => new PeerConnection(user), []);
     return null;
 };
 

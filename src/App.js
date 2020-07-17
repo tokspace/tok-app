@@ -74,7 +74,7 @@ function App() {
         } else {
             return (
                 <>
-                    <Call user={user} />
+                    <Call />
                     <Switch>
                         <Route path={"/sessions/new-with-user/:userId"}>
                             <SessionInitiator />

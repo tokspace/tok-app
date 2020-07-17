@@ -1,17 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { PeerConnection } from "../websockets/Connection";
 import UserContext from "../contexts/UserContext";
 
-export default function () {
+export default () => {
     const { userId } = useParams();
     const user = useContext(UserContext);
 
-    new PeerConnection(user, true, userId);
+    useMemo(() => new PeerConnection(user, true, userId), [user, userId]);
     return (
         <>
             {/* {audioStream && <audio autoPlay={true} src={audioStream}></audio>} */}
             <p>Starting a session with {userId}</p>
         </>
     );
-}
+};
