@@ -18,6 +18,7 @@ import Dashboard from "./apps/Dashboard";
 import SessionInitiator from "./apps/SessionInitiator";
 import { PeerConnection } from "./websockets/Connection";
 import Call from "./apps/Call";
+import Settings from "./apps/Settings";
 
 const Background = styled.div`
     ${(props) =>
@@ -90,6 +91,9 @@ function App() {
                             <Background>
                                 <OfficeView />
                             </Background>
+                        </Route>
+                        <Route path="/settings">
+                            <Settings />
                         </Route>
                         <Redirect to="/dashboard" />
                     </Switch>
