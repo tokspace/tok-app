@@ -16,13 +16,13 @@ export class PeerConnection {
                 audio: true,
             })
             .then((stream) => {
-                this.ws.onopen = () => {
-                    this.ws.onmessage = (event) => {
-                        const data = JSON.parse(event.data);
-                        this.from = data.origin;
-                        this.p.signal(data.data);
-                    };
+                this.ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    this.from = data.origin;
+                    this.p.signal(data.data);
+                };
 
+                this.ws.onopen = () => {
                     this.p = new Peer({ initiator: isInitiator, stream });
                     // setIsOnline(user, true)
                     this.isInitiator
