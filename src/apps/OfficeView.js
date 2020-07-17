@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
+import CallContext from "../contexts/CallContext";
 import { Link, useParams, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import { Button, SecondaryButton } from "../components/Inputs";
 import { Card } from "../styled/Card";
 
-export default function () {
+export default () => {
     const user = useContext(UserContext);
+    const call = useContext(CallContext);
     const { officeId } = useParams();
     const [office, setOfficeState] = useState({
         Name: "Name",
@@ -25,6 +27,7 @@ export default function () {
 
     const history = useHistory();
     const signout = () => {
+        call.close();
         firebase
             .auth()
             .signOut()
@@ -59,4 +62,4 @@ export default function () {
             </SecondaryButton>
         </Card>
     );
-}
+};
