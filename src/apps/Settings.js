@@ -50,11 +50,17 @@ const Settings = () => {
                 <p key={process}>{process}</p>
             ))}
             {runningProcesses.length <= 0 && (
-                <Button
-                    className="lt-button lt-hover"
-                    onClick={async () => await handleChooseANewProcess()}>
-                    Add a New Process
-                </Button>
+                <>
+                    <p className="subtext">
+                        You haven't configured your availability status to
+                        change if any processes are running.
+                    </p>
+                    <Button
+                        className="lt-button lt-hover"
+                        onClick={async () => await handleChooseANewProcess()}>
+                        Add a New Process
+                    </Button>
+                </>
             )}
             {runningProcesses.length > 0 && (
                 <>

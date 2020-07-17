@@ -78,7 +78,7 @@ function parseDataFile(filePath, defaults) {
 const store = new Store({
     configName: "user-configs",
     defaults: {
-        storedProcesses: ["one", "two", "three"],
+        storedProcesses: [],
     },
 });
 
