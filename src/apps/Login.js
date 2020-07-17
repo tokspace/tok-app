@@ -10,7 +10,8 @@ const LoginComponent = (props) => {
     const [pass, setPass] = useState("");
     const [errMsg, setErrMsg] = useState("");
 
-    const validateForm = () => {
+    const validateForm = (e) => {
+        e.preventDefault();
         if (pass.length < 6) {
             setErrMsg("Password must be > 6 characters");
             return;
@@ -26,40 +27,40 @@ const LoginComponent = (props) => {
 
     return (
         <Card className="lt-card lt-shadow">
-            <img
-                style={{
-                    height: 64,
-                }}
-                alt={""}
-                src={"tokspace.png"}
-            />
-            <h2>Login</h2>
-            <p className="subtext">Welcome back to TokSpace.</p>
-            <TextInput
-                label="Email"
-                id="email"
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextInput
-                label="Password"
-                id="pass"
-                type="password"
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
-            />
-            <Button className="lt-button lt-hover" onClick={validateForm}>
-                Login
-            </Button>
-            <Link to="/register" className="subtext">
-                Make an account
-            </Link>
-            <ErrorMessage
-                message={errMsg}
-                timeout={3000}
-                setMessage={setErrMsg}
-            />
+            <form onSubmit={validateForm}>
+                <img
+                    style={{
+                        height: 64,
+                    }}
+                    alt={""}
+                    src={"/tokspace.png"}
+                />
+                <h2>Login</h2>
+                <p className="subtext">Welcome back to TokSpace.</p>
+                <TextInput
+                    label="Email"
+                    id="email"
+                    type="text"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextInput
+                    label="Password"
+                    id="pass"
+                    type="password"
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                />
+                <Button className="lt-button lt-hover">Login</Button>
+                <Link to="/register" className="subtext">
+                    Make an account
+                </Link>
+                <ErrorMessage
+                    message={errMsg}
+                    timeout={3000}
+                    setMessage={setErrMsg}
+                />
+            </form>
         </Card>
     );
 };
