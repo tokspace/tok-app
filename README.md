@@ -58,6 +58,6 @@ For setting the development environment on your machine:
 - Run `npm run start` to start the app
 
 
-## Made with :heart: by the turnips @akainth015 @jackyzha0 @nchaloult @yashika51
+### Made with :heart: by the turnips [Aanad](https://github.com/akainth015), Jacky(https://github.com/jackyzha0), [Nick](https://github.com/nchaloult), [Yashika](https://github.com/yashika51)
 
 
