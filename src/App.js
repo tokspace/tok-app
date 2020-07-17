@@ -10,11 +10,13 @@ import {
 } from "react-router-dom";
 import firebase from "firebase/app";
 import UserContext from "./contexts/UserContext";
+import CallContext from "./contexts/CallContext";
 import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
 import OfficeView from "./apps/OfficeView";
 import PropTypes from "prop-types";
 import Dashboard from "./apps/Dashboard";
 import SessionInitiator from "./apps/SessionInitiator";
+import { PeerConnection } from "./websockets/Connection";
 import Call from "./apps/Call";
 
 const Background = styled.div`
@@ -34,6 +36,7 @@ Background.propTypes = {
 
 function App() {
     const [user, setUser] = useState(null);
+    const [call, setCall] = useState(null);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -51,6 +54,7 @@ function App() {
                         ...firebaseUser,
                     });
                 });
+            setCall(new PeerConnection(firebaseUser));
         });
     }, []);
 
@@ -73,8 +77,8 @@ function App() {
             );
         } else {
             return (
-                <>
-                    <Call user={user} />
+                <CallContext.Provider value={call}>
+                    <Call />
                     <Switch>
                         <Route path={"/sessions/new-with-user/:userId"}>
                             <SessionInitiator />
@@ -89,7 +93,7 @@ function App() {
                         </Route>
                         <Redirect to="/dashboard" />
                     </Switch>
-                </>
+                </CallContext.Provider>
             );
         }
     }

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect, useRef } from "react";
+import UserContext from "../contexts/UserContext";
 import Webcam from "react-webcam";
 import { PeerConnection } from "../websockets/Connection";
 
 const WebcamComponent = () => <Webcam />;
 
-const Call = ({ user }) => {
-    new PeerConnection(user);
+const Call = () => {
     return null;
 };
 

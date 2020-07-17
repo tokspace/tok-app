@@ -6,9 +6,6 @@ export class PeerConnection {
         this.user = user;
         this.isInitiator = isInitiator;
         this.targetUser = targetUser;
-        this.ws = new WebSocket(
-            "ws://ec2-54-197-132-43.compute-1.amazonaws.com:8080/",
-        );
 
         navigator.mediaDevices
             .getUserMedia({
@@ -16,14 +13,15 @@ export class PeerConnection {
                 audio: true,
             })
             .then((stream) => {
-                this.ws.onmessage = (event) => {
-                    const data = JSON.parse(event.data);
-                    this.from = data.origin;
-                    this.p.signal(data.data);
-                };
-
+                this.ws = new WebSocket(
+                    "ws://ec2-54-197-132-43.compute-1.amazonaws.com:8080/",
+                );
                 this.ws.onopen = () => {
-                    console.log("???");
+                    this.ws.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+                        this.from = data.origin;
+                        this.p.signal(data.data);
+                    };
                     this.p = new Peer({ initiator: isInitiator, stream });
                     // setIsOnline(user, true)
                     this.isInitiator
@@ -34,7 +32,7 @@ export class PeerConnection {
                 };
             })
             .catch((e) => {
-                // swallow error
+                console.warn(e);
             });
     }
 
