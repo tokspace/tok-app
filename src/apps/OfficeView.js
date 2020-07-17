@@ -50,6 +50,23 @@ export default ({ call }) => {
             });
     }, [officeId]);
 
+    // Refresh availability status based on running processes every 30 seconds.
+    useEffect(() => {
+        async function refreshAvailabilityStatus() {
+            const newAvailabilityStatus = await ipcRenderer.invoke(
+                "refreshAvailabilityProcessRequest",
+                null,
+            );
+            setIsOnline(newAvailabilityStatus);
+        }
+
+        const interval = setInterval(
+            () => refreshAvailabilityStatus(),
+            1000 * 30,
+        );
+        return () => clearInterval(interval);
+    }, []);
+
     const history = useHistory();
     const signout = () => {
         call.close();
