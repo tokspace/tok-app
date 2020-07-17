@@ -21,10 +21,10 @@ export function NewPeer(user, isInitiator = false, target = undefined) {
             };
 
             ws.onopen = () => {
+                p = new Peer({ initiator: isInitiator, stream });
                 if (isInitiator) {
                     console.log("initiating connection as initiator");
                     ws.send(user.uid);
-                    p = new Peer({ initiator: isInitiator, stream });
                     p.on("signal", (data) => {
                         const payload = {
                             target: target,
