@@ -14,7 +14,7 @@ import { InvisibleTitleBar } from "./components/InvisibleTitleBar";
 import OfficeView from "./apps/OfficeView";
 import PropTypes from "prop-types";
 import Dashboard from "./apps/Dashboard";
-import Peer from "simple-peer";
+import { NewPeer } from "./websockets/Connection";
 import SessionInitiator from "./apps/SessionInitiator";
 
 const Background = styled.div`
@@ -34,7 +34,7 @@ Background.propTypes = {
 
 function App() {
     const [user, setUser] = useState(null);
-    const [audioSource, setAudioSource] = useState(null);
+    // const [audioSource, setAudioSource] = useState(null);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -53,56 +53,7 @@ function App() {
                     });
                 });
 
-            const webSocket = new WebSocket("ws://localhost:8080");
-            const acceptingPeer = new Peer();
-
-            let lastAuthor;
-
-            webSocket.addEventListener("open", function () {
-                webSocket.send(firebaseUser.uid);
-                acceptingPeer.on("signal", function (data) {
-                    console.log(data);
-                    const message = Object.assign(data, {
-                        target: lastAuthor,
-                    });
-                    webSocket.send(JSON.stringify(message));
-                });
-            });
-            webSocket.addEventListener("message", function (ev) {
-                const data = JSON.parse(ev.data);
-                console.log(data);
-
-                lastAuthor = data.author;
-                acceptingPeer.signal(data);
-            });
-            acceptingPeer.on("connect", function () {
-                console.log("Fired from the connect listener");
-                acceptingPeer.send("Sending from nick's machine :)");
-
-                window.acceptingPeer = acceptingPeer;
-
-                navigator.mediaDevices
-                    .getUserMedia({
-                        audio: true,
-                    })
-                    .then((stream) => {
-                        acceptingPeer.addStream(stream);
-                        acceptingPeer.on("stream", (stream) => {
-                            setAudioSource(stream);
-                        });
-
-                        audioSource.play();
-                    })
-                    .catch((err) => {
-                        console.log(
-                            "catching an error from the acceptingPeer.on('connect') listener:",
-                        );
-                        console.error(err);
-                    });
-            });
-            acceptingPeer.on("data", function (data) {
-                console.debug(`Got a message: ${data}`);
-            });
+            NewPeer(firebaseUser);
         });
     }, []);
 
@@ -147,7 +98,7 @@ function App() {
             <InvisibleTitleBar />
             <UserContext.Provider value={user}>
                 <Router>{routes}</Router>
-                {audioSource && <video src={audioSource}></video>}
+                {/* {audioSource && <audio src={audioSource}></audio>} */}
             </UserContext.Provider>
         </>
     );
