@@ -8,7 +8,9 @@ export function NewPeer(user, isInitiator = false, target = undefined) {
             audio: true,
         })
         .then((stream) => {
-            const ws = new WebSocket("ws://localhost:8080/");
+            const ws = new WebSocket(
+                "ws://tokspace-websocket-signaling.herokuapp.com/",
+            );
             const p = new Peer({ initiator: isInitiator, stream: stream });
 
             let from;

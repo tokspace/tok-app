@@ -34,7 +34,6 @@ Background.propTypes = {
 
 function App() {
     const [user, setUser] = useState(null);
-    // const [audioSource, setAudioSource] = useState(null);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -57,48 +56,49 @@ function App() {
         });
     }, []);
 
-    let routes;
-    if (user === null) {
-        routes = (
-            <Switch>
-                <Route path="/register">
-                    <Background centered={true}>
-                        <RegistrationComponent />
-                    </Background>
-                </Route>
-                <Route path="/login">
-                    <Background centered={true}>
-                        <LoginComponent />
-                    </Background>
-                </Route>
-                <Redirect to="/login" />
-            </Switch>
-        );
-    } else {
-        routes = (
-            <Switch>
-                <Route path={"/sessions/new-with-user/:userId"}>
-                    <SessionInitiator />
-                </Route>
-                <Route path="/dashboard">
-                    <Dashboard />
-                </Route>
-                <Route path={"/office/:officeId"}>
-                    <Background>
-                        <OfficeView />
-                    </Background>
-                </Route>
-                <Redirect to="/dashboard" />
-            </Switch>
-        );
+    function renderRoutes() {
+        if (user === null) {
+            return (
+                <Switch>
+                    {/* {NewPeer(user)} */}
+                    <Route path="/register">
+                        <Background centered={true}>
+                            <RegistrationComponent />
+                        </Background>
+                    </Route>
+                    <Route path="/login">
+                        <Background centered={true}>
+                            <LoginComponent />
+                        </Background>
+                    </Route>
+                    <Redirect to="/login" />
+                </Switch>
+            );
+        } else {
+            return (
+                <Switch>
+                    <Route path={"/sessions/new-with-user/:userId"}>
+                        <SessionInitiator />
+                    </Route>
+                    <Route path="/dashboard">
+                        <Dashboard />
+                    </Route>
+                    <Route path={"/office/:officeId"}>
+                        <Background>
+                            <OfficeView />
+                        </Background>
+                    </Route>
+                    <Redirect to="/dashboard" />
+                </Switch>
+            );
+        }
     }
 
     return (
         <>
             <InvisibleTitleBar />
             <UserContext.Provider value={user}>
-                <Router>{routes}</Router>
-                {/* {audioSource && <audio src={audioSource}></audio>} */}
+                <Router>{renderRoutes()}</Router>
             </UserContext.Provider>
         </>
     );
