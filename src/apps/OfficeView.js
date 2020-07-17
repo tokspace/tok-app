@@ -87,7 +87,7 @@ export default ({ call }) => {
             <h2>Logged in as {user.tokProfile.name}</h2>
             <p>Status: {isOnline ? "Online" : "Busy"}</p>
             {onlineUsers.map((callee) => (
-                <Desk className="lt-card">
+                <Desk key={callee.user.id} className="lt-card">
                     <h3 style={{ flexGrow: 1 }}>{callee.name}</h3>
                     <Link
                         to={`/sessions/new-with-user/${callee.user.id}`}
