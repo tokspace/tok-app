@@ -38,6 +38,10 @@ You can also set your availability off whenever you don't want your co-workers l
  
 - Weekly Analytics (Coming Soon :running:) :bar_chart:
 
+## Let's take a look!
+
+![Register](public\screenshots\sign-up.png) ![Register](public\screenshots\login.png)
+![Register](public\screenshots\office-view.png) ![Register](public\screenshots\settings.png)
 
 ## Setting up on your machine
 
